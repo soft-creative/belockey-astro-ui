@@ -1,0 +1,35 @@
+---
+interface Props {
+  active?: 'producto' | 'precios' | 'contacto';
+}
+const { active } = Astro.props;
+---
+<header>
+  <div class="container nav">
+    <a class="brand-logo" href="/producto" aria-label="BeLockey - Producto">
+      <img src="/assets/belockey-logo.png" alt="BeLockey" />
+    </a>
+    <nav class="menu" aria-label="Navegación principal">
+      <a class:list={{ active: active === 'producto' }} href="/producto">Producto</a>
+      <a class:list={{ active: active === 'precios' }} href="/precios">Precios</a>
+      <a class:list={{ active: active === 'contacto' }} href="/contacto">Contacto</a>
+    </nav>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú">☰</button>
+    <a class="btn primary small" href="/contacto#formulario">Solicitar demo →</a>
+  </div>
+  <div class="container mobile-menu" id="mobile-menu">
+    <a class:list={{ active: active === 'producto' }} href="/producto">Producto</a>
+    <a class:list={{ active: active === 'precios' }} href="/precios">Precios</a>
+    <a class:list={{ active: active === 'contacto' }} href="/contacto">Contacto</a>
+    <a class="btn primary small" href="/contacto#formulario">Solicitar demo →</a>
+  </div>
+</header>
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const menu = document.querySelector<HTMLElement>('#mobile-menu');
+  toggle?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('open') ?? false;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.textContent = open ? '×' : '☰';
+  });
+</script>

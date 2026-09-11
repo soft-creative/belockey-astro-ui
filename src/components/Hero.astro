@@ -1,0 +1,34 @@
+---
+const {
+  eyebrow,
+  title,
+  highlight,
+  description,
+  image,
+  primary='Reservar demo',
+  secondary='Hablar con un experto',
+  badges=[]
+}=Astro.props;
+---
+<section class="hero">
+  <div class="shell hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">{eyebrow}</span>
+      <h1>{title} <span>{highlight}</span></h1>
+      <p>{description}</p>
+      <div class="actions">
+        <button class="btn btn-primary" type="button">{primary} →</button>
+        <button class="btn btn-outline" type="button">{secondary}</button>
+      </div>
+      {badges.length > 0 && (
+        <div class="hero-badges">
+          {badges.map((badge) => <div><b>◈</b><span>{badge}</span></div>)}
+        </div>
+      )}
+    </div>
+    <div class="hero-art">
+      <div class="hero-blob" aria-hidden="true"></div>
+      <img src={image} alt="Ecosistema BeLockey" loading="eager" fetchpriority="high" />
+    </div>
+  </div>
+</section>

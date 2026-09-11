@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import LegalPage from '../components/LegalPage.astro';
+const sections = ["1. Qué es una cookie", "2. Categorías que usamos", "3. La lista", "4. Cómo gestionar tus preferencias", "5. Do Not Track", "6. Niños", "7. Cambios", "8. Contacto"];
+---
+<BaseLayout title="Cookies · BeLockey">
+  <Header />
+  <LegalPage title="Política de cookies" intro="Estructura visual para la política de cookies aprobada de BeLockey." sections={sections} />
+  <Footer />
+</BaseLayout>

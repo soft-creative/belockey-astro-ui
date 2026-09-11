@@ -1,0 +1,4 @@
+---
+const {title='Dudas frecuentes',items=[]}=Astro.props;
+---
+<section class="shell faq-section"><div class="faq-intro"><span class="eyebrow">PREGUNTAS FRECUENTES</span><h2>{title}</h2></div><div class="faq-list">{items.map((item)=><details><summary>{item}</summary><p>Te ayudamos a configurar la opción que mejor encaje con tu negocio. Contacta con nuestro equipo para una respuesta personalizada.</p></details>)}</div></section>

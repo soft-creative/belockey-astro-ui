@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const sections = [
+  'Responsable del tratamiento',
+  'Qué es el chatbot de BeLockey',
+  'Datos personales que podemos tratar',
+  'Finalidades del tratamiento',
+  'Bases jurídicas',
+  'Uso de WhatsApp y Meta',
+  'Uso de inteligencia artificial y sistemas automatizados',
+  'Proveedores y encargados del tratamiento',
+  'Transferencias internacionales de datos',
+  'Conservación de los datos',
+  'Comunicaciones comerciales',
+  'Datos de terceros',
+  'Menores de edad',
+  'Seguridad',
+  'Derechos de los usuarios',
+  'Reclamaciones ante la autoridad de control',
+  'Eliminación de datos',
+  'Cambios en esta política'
+];
+---
+<BaseLayout
+  title="Privacidad del chatbot | BeLockey"
+  description="Política de privacidad del chatbot de BeLockey."
+>
+  <section class="legal-hero">
+    <div class="shell">
+      <div class="eyebrow">Legal</div>
+      <h1>Política de privacidad del chatbot de BeLockey</h1>
+    </div>
+  </section>
+
+  <div class="legal-wrap">
+    <!-- El HTML facilitado contiene un mock visual. Sustituir estos bloques por el texto legal aprobado cuando esté disponible. -->
+    {sections.map((section, index) => (
+      <section class="legal-section">
+        <h2>{index + 1}. {section}</h2>
+        <div class="legal-placeholder" aria-hidden="true">
+          <i></i><i></i><i></i>
+        </div>
+      </section>
+    ))}
+  </div>
+</BaseLayout>

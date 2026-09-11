@@ -1,0 +1,4 @@
+---
+const {title,copy,icon='□',className=''}=Astro.props;
+---
+<article class:list={['icon-card',className]}><div class="icon-bubble">{icon}</div><h3>{title}</h3>{copy && <p>{copy}</p>}</article>
