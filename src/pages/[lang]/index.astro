@@ -7,5 +7,5 @@ export function getStaticPaths() {
 
 interface Props { lang: Exclude<Locale, 'es'>; }
 const { lang } = Astro.props;
-return Astro.redirect(paths[lang].product);
+return Astro.redirect(paths[lang].solutions);
 ---

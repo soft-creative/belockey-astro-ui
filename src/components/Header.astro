@@ -1,23 +1,24 @@
 ---
 import { localeNames, locales, paths, translations, type Locale, type PageKey } from '../i18n';
 interface Props {
-  active?: 'producto' | 'precios' | 'contacto';
+  active?: 'producto' | 'soluciones' | 'precios' | 'contacto';
   lang?: Locale;
   page?: PageKey;
 }
 const { active, lang = 'es', page = 'product' } = Astro.props;
 const t = translations[lang].common;
-const activeKey = active === 'producto' ? 'product' : active === 'precios' ? 'pricing' : active === 'contacto' ? 'contact' : undefined;
+const activeKey = active === 'producto' ? 'product' : active === 'soluciones' ? 'solutions' : active === 'precios' ? 'pricing' : active === 'contacto' ? 'contact' : undefined;
 const contactFormHref = `${paths[lang].contact}#formulario`;
 const languageOptions = locales.map((locale) => ({ locale, name: localeNames[locale], href: paths[locale][page] }));
 ---
 <header>
   <div class="container nav">
-    <a class="brand-logo" href={paths[lang].product} aria-label={`BeLockey - ${t.nav.product}`}>
+    <a class="brand-logo" href={paths[lang].solutions} aria-label="BeLockey">
       <img src="/assets/belockey-logo.png" alt="BeLockey" />
     </a>
     <nav class="menu" aria-label={t.navLabel}>
       <a class:list={{ active: activeKey === 'product' }} href={paths[lang].product}>{t.nav.product}</a>
+      <a class:list={{ active: activeKey === 'solutions' }} href={paths[lang].solutions}>{t.nav.solutions}</a>
       <a class:list={{ active: activeKey === 'pricing' }} href={paths[lang].pricing}>{t.nav.pricing}</a>
       <a class:list={{ active: activeKey === 'contact' }} href={paths[lang].contact}>{t.nav.contact}</a>
     </nav>
@@ -36,6 +37,7 @@ const languageOptions = locales.map((locale) => ({ locale, name: localeNames[loc
   </div>
   <div class="container mobile-menu" id="mobile-menu">
     <a class:list={{ active: activeKey === 'product' }} href={paths[lang].product}>{t.nav.product}</a>
+    <a class:list={{ active: activeKey === 'solutions' }} href={paths[lang].solutions}>{t.nav.solutions}</a>
     <a class:list={{ active: activeKey === 'pricing' }} href={paths[lang].pricing}>{t.nav.pricing}</a>
     <a class:list={{ active: activeKey === 'contact' }} href={paths[lang].contact}>{t.nav.contact}</a>
     <div class="mobile-languages" aria-label={t.language}>

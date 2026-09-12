@@ -4,14 +4,21 @@ interface Props { lang?: Locale; }
 const { lang = 'es' } = Astro.props;
 const t = translations[lang].common;
 const productAnchors = ['#vision', '#marca', '#operaciones', '#integraciones', '#faq'];
+const solutionAnchors = ['#casos', '#sectores', '#implementacion', '#guia'];
 const pricingAnchors = ['#composicion', '#factores', '#contratacion', '#faq'];
 ---
 <footer>
   <div class="container">
     <div class="footer-grid">
       <div class="foot-brand">
-        <a class="brand-logo" href={paths[lang].product} aria-label={`BeLockey - ${t.nav.product}`}><img src="/assets/belockey-logo.png" alt="BeLockey" /></a>
+        <a class="brand-logo" href={paths[lang].solutions} aria-label="BeLockey"><img src="/assets/belockey-logo.png" alt="BeLockey" /></a>
         <p>{t.footer.description}</p>
+      </div>
+      <div>
+        <div class="footer-title">{t.nav.solutions}</div>
+        <div class="footer-links">
+          {t.footer.solutionLinks.map((label, index) => <a href={`${paths[lang].solutions}${solutionAnchors[index]}`}>{label}</a>)}
+        </div>
       </div>
       <div>
         <div class="footer-title">{t.nav.product}</div>

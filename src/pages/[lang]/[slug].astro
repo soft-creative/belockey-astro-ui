@@ -1,5 +1,6 @@
 ---
 import ProductPage from '../../components/pages/ProductPage.astro';
+import SolutionsPage from '../../components/pages/SolutionsPage.astro';
 import PricingPage from '../../components/pages/PricingPage.astro';
 import ContactPage from '../../components/pages/ContactPage.astro';
 import LocalizedLegalPage from '../../components/pages/LocalizedLegalPage.astro';
@@ -7,9 +8,9 @@ import type { Locale, PageKey } from '../../i18n';
 
 export function getStaticPaths() {
   const localizedSlugs: Record<Exclude<Locale, 'es'>, Record<string, PageKey>> = {
-    en: { product: 'product', pricing: 'pricing', contact: 'contact', privacy: 'privacy', terms: 'terms', cookies: 'cookies', 'chatbot-privacy': 'chatbotPrivacy' },
-    fr: { produit: 'product', tarifs: 'pricing', contact: 'contact', confidentialite: 'privacy', conditions: 'terms', cookies: 'cookies', 'confidentialite-chatbot': 'chatbotPrivacy' },
-    de: { produkt: 'product', preise: 'pricing', kontakt: 'contact', datenschutz: 'privacy', bedingungen: 'terms', cookies: 'cookies', 'chatbot-datenschutz': 'chatbotPrivacy' }
+    en: { product: 'product', solutions: 'solutions', pricing: 'pricing', contact: 'contact', privacy: 'privacy', terms: 'terms', cookies: 'cookies', 'chatbot-privacy': 'chatbotPrivacy' },
+    fr: { produit: 'product', solutions: 'solutions', tarifs: 'pricing', contact: 'contact', confidentialite: 'privacy', conditions: 'terms', cookies: 'cookies', 'confidentialite-chatbot': 'chatbotPrivacy' },
+    de: { produkt: 'product', loesungen: 'solutions', preise: 'pricing', kontakt: 'contact', datenschutz: 'privacy', bedingungen: 'terms', cookies: 'cookies', 'chatbot-datenschutz': 'chatbotPrivacy' }
   };
   return Object.entries(localizedSlugs).flatMap(([lang, routes]) =>
     Object.entries(routes).map(([slug, page]) => ({ params: { lang, slug }, props: { lang, page } }))
@@ -20,6 +21,7 @@ interface Props { lang: Exclude<Locale, 'es'>; page: PageKey; }
 const { lang, page } = Astro.props;
 ---
 {page === 'product' && <ProductPage lang={lang} />}
+{page === 'solutions' && <SolutionsPage lang={lang} />}
 {page === 'pricing' && <PricingPage lang={lang} />}
 {page === 'contact' && <ContactPage lang={lang} />}
 {page === 'privacy' && <LocalizedLegalPage lang={lang} page="privacy" />}

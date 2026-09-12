@@ -3,6 +3,7 @@ export type Locale = (typeof locales)[number];
 
 export type PageKey =
   | 'product'
+  | 'solutions'
   | 'pricing'
   | 'contact'
   | 'privacy'
@@ -22,6 +23,7 @@ export const localeNames: Record<Locale, string> = {
 export const paths: Record<Locale, Record<PageKey, string>> = {
   es: {
     product: '/producto',
+    solutions: '/soluciones',
     pricing: '/precios',
     contact: '/contacto',
     privacy: '/privacidad',
@@ -31,6 +33,7 @@ export const paths: Record<Locale, Record<PageKey, string>> = {
   },
   en: {
     product: '/en/product',
+    solutions: '/en/solutions',
     pricing: '/en/pricing',
     contact: '/en/contact',
     privacy: '/en/privacy',
@@ -40,6 +43,7 @@ export const paths: Record<Locale, Record<PageKey, string>> = {
   },
   fr: {
     product: '/fr/produit',
+    solutions: '/fr/solutions',
     pricing: '/fr/tarifs',
     contact: '/fr/contact',
     privacy: '/fr/confidentialite',
@@ -49,6 +53,7 @@ export const paths: Record<Locale, Record<PageKey, string>> = {
   },
   de: {
     product: '/de/produkt',
+    solutions: '/de/loesungen',
     pricing: '/de/preise',
     contact: '/de/kontakt',
     privacy: '/de/datenschutz',
@@ -85,10 +90,11 @@ export const translations = {
   es: {
     common: {
       navLabel: 'Navegación principal', menuOpen: 'Abrir menú', menuClose: 'Cerrar menú', language: 'Idioma',
-      nav: { product: 'Producto', pricing: 'Precios', contact: 'Contacto', demo: 'Solicitar demo →' },
+      nav: { product: 'Producto', solutions: 'Soluciones', pricing: 'Precios', contact: 'Contacto', demo: 'Solicitar demo →' },
       footer: {
         description: 'Software para gestionar negocios basados en lockers inteligentes.',
         productLinks: ['Visión general', 'Marca y experiencia', 'Operaciones', 'Pagos e integraciones', 'Preguntas frecuentes'],
+        solutionLinks: ['Casos de uso', 'Sectores', 'Implementación', 'Guía de decisión'],
         pricingLinks: ['Cómo se compone', 'Factores de precio', 'Contratación', 'Preguntas frecuentes'],
         about: 'Sobre nosotros', privacy: 'Política de privacidad', terms: 'Términos y condiciones', cookies: 'Cookies',
         signature: 'Diseño web · Sistema visual BeLockey'
@@ -103,6 +109,18 @@ export const translations = {
       integrations: { eyebrow: 'Pagos e integraciones', title: 'Conecta la operativa con tus herramientas.', copy: 'BeLockey integra los pagos dentro del flujo de reserva y permite conectar la plataforma con servicios externos.', cards: [['Stripe', 'Integración de pago dentro del proceso de reserva.'], ['PayPal', 'Opción de pago integrada en la operativa.'], ['myPOS', 'Integración con el ecosistema de pagos utilizado por el negocio.']] },
       faq: { title: 'Preguntas sobre el producto.', items: ['¿Puedo gestionar varias ubicaciones?', '¿Los clientes pueden reservar online?', '¿Puedo utilizar un kiosco en el local?', '¿Cómo se monitoriza el estado de un kiosco?'] },
       cta: { eyebrow: 'Conoce BeLockey', title: '¿Quieres verlo funcionando en tu negocio?', copy: 'Solicita una demo y revisamos contigo el flujo que necesitas.', button: 'Solicitar demo →' }
+    },
+    solutions: {
+      metaTitle: 'Soluciones · BeLockey', metaDescription: 'Soluciones de lockers inteligentes para distintos casos de uso y sectores.',
+      hero: { eyebrow: 'Una solución para cada negocio', before: 'Soluciones para cada', highlight: 'caso de uso.', description: 'Adaptamos el hardware y el software a las necesidades de cada sector y modelo de negocio para ofrecer una experiencia de autoservicio segura, flexible y eficiente.', primary: 'Solicitar demo →', secondary: 'Explorar soluciones', imageAlt: 'Lockers inteligentes BeLockey con kiosco integrado', notes: ['Soluciones adaptadas al negocio', 'Hardware y software coordinados', 'Una o múltiples ubicaciones'] },
+      tabs: ['Click & Collect', 'Custodia de equipaje', 'Consignas inteligentes', 'Custodia de llaves', 'Retail y e-commerce', 'Hoteles y turismo', 'Empresas', 'Transporte', 'Gimnasios y centros'],
+      cases: { eyebrow: 'Soluciones destacadas', title: 'Casos de uso que transforman tu operación.', copy: 'Explora las principales soluciones y encuentra el enfoque que mejor encaja con tu operativa.', link: 'Saber más →', cards: [['Click & Collect', 'Entrega pedidos online y permite que tus clientes los recojan cuando quieran.'], ['Custodia de equipaje', 'Ofrece un espacio para equipaje con reservas digitales y acceso autónomo.'], ['Consignas inteligentes', 'Una solución versátil para objetos en espacios públicos, comerciales o de alta afluencia.'], ['Custodia de llaves', 'Gestiona llaves para alquileres, flotas, empresas de servicios y otros usos.']] },
+      sectors: { eyebrow: 'Soluciones por sector', title: 'Tu sector, nuestra tecnología.', copy: 'Cada sector tiene retos propios. Configura la solución según el uso, el entorno y la operativa.', link: 'Ver solución →', cards: [['Retail y e-commerce', 'Entrega de pedidos online, devoluciones y recogidas.'], ['Hoteles y turismo', 'Custodia de equipaje y acceso autónomo para huéspedes.'], ['Empresas', 'Gestión de pertenencias, equipos de trabajo y llaves.'], ['Transporte', 'Consignas en estaciones, aeropuertos y terminales.'], ['Gimnasios y centros', 'Taquillas para socios, visitas y personal.']] },
+      implementation: { eyebrow: 'Diferentes formas de implementación', title: 'Una solución, múltiples formas de funcionar.', cards: [['Reservas online', 'Los usuarios reservan y pagan desde el móvil.'], ['Autoservicio en el local', 'Acceso mediante los métodos configurados para el proyecto.'], ['Control remoto', 'Gestiona la operativa desde una única plataforma.'], ['Multiubicación', 'Coordina una o varias ubicaciones desde el mismo entorno.']] },
+      includes: { eyebrow: 'Todo lo que necesitas', title: 'Qué incluye cada solución.', copy: 'Combina los elementos que necesita tu proyecto.', cards: [['Software de gestión', 'Panel web y herramientas de control.'], ['Hardware inteligente', 'Taquillas, kioscos y elementos de acceso.'], ['Pagos', 'Opciones de pago dentro del flujo configurado.'], ['Permisos y usuarios', 'Control de accesos y roles.'], ['Configuración y soporte', 'Acompañamiento según el alcance del proyecto.']] },
+      guide: { eyebrow: 'Guía de decisión', title: 'Encuentra tu solución ideal.', copy: 'Compara las opciones según necesidad, ubicación y modelo operativo.', headers: ['Solución', 'Qué resuelve', 'Ubicación habitual', 'Modelo operativo', 'Ideal para'], rows: [['Click & Collect', 'Entrega y recogida de pedidos', 'Tiendas y centros comerciales', 'Autoservicio', 'Retail y e-commerce'], ['Custodia de equipaje', 'Guarda de maletas y pertenencias', 'Hoteles, estaciones y aeropuertos', 'Con reserva o autónomo', 'Turismo y transporte'], ['Consignas inteligentes', 'Custodia de objetos', 'Espacios públicos y centros', 'Autoservicio', 'Uso general'], ['Custodia de llaves', 'Gestión de llaves', 'Empresas, alquileres y servicios', 'Con permisos', 'Empresas y servicios']] },
+      faq: { eyebrow: 'Preguntas frecuentes', title: 'Dudas comunes sobre nuestras soluciones.', items: ['¿Cómo se define la solución adecuada?', '¿Puedo adaptar el tamaño y número de taquillas?', '¿Qué métodos de pago están disponibles?', '¿Cómo se plantea la puesta en marcha?'] },
+      cta: { title: '¿Hablamos de tu proyecto?', copy: 'Cuéntanos tu caso y te ayudamos a definir la solución.', primary: 'Solicitar demo →', secondary: 'Ver precios' }
     },
     pricing: {
       metaTitle: 'Precios · BeLockey', metaDescription: 'Cómo se compone una propuesta de BeLockey.',
@@ -125,8 +143,8 @@ export const translations = {
   en: {
     common: {
       navLabel: 'Main navigation', menuOpen: 'Open menu', menuClose: 'Close menu', language: 'Language',
-      nav: { product: 'Product', pricing: 'Pricing', contact: 'Contact', demo: 'Request a demo →' },
-      footer: { description: 'Software for managing businesses based on smart lockers.', productLinks: ['Overview', 'Brand and experience', 'Operations', 'Payments and integrations', 'Frequently asked questions'], pricingLinks: ['How pricing is structured', 'Pricing factors', 'Contracting', 'Frequently asked questions'], about: 'About us', privacy: 'Privacy policy', terms: 'Terms and conditions', cookies: 'Cookies', signature: 'Web design · BeLockey visual system' }
+      nav: { product: 'Product', solutions: 'Solutions', pricing: 'Pricing', contact: 'Contact', demo: 'Request a demo →' },
+      footer: { description: 'Software for managing businesses based on smart lockers.', productLinks: ['Overview', 'Brand and experience', 'Operations', 'Payments and integrations', 'Frequently asked questions'], solutionLinks: ['Use cases', 'Industries', 'Implementation', 'Decision guide'], pricingLinks: ['How pricing is structured', 'Pricing factors', 'Contracting', 'Frequently asked questions'], about: 'About us', privacy: 'Privacy policy', terms: 'Terms and conditions', cookies: 'Cookies', signature: 'Web design · BeLockey visual system' }
     },
     product: {
       metaTitle: 'Product · BeLockey', metaDescription: 'The BeLockey platform for managing smart lockers.',
@@ -137,6 +155,18 @@ export const translations = {
       integrations: { eyebrow: 'Payments and integrations', title: 'Connect operations with your tools.', copy: 'BeLockey integrates payments into the booking flow and lets you connect the platform to external services.', cards: [['Stripe', 'Payment integration within the booking process.'], ['PayPal', 'An integrated payment option for your operation.'], ['myPOS', 'Integration with the payment ecosystem used by your business.']] },
       faq: { title: 'Product questions.', items: ['Can I manage several locations?', 'Can customers book online?', 'Can I use a kiosk on site?', 'How is a kiosk’s status monitored?'] },
       cta: { eyebrow: 'Discover BeLockey', title: 'Would you like to see it working in your business?', copy: 'Request a demo and we will review the flow you need with you.', button: 'Request a demo →' }
+    },
+    solutions: {
+      metaTitle: 'Solutions · BeLockey', metaDescription: 'Smart locker solutions for different use cases and industries.',
+      hero: { eyebrow: 'A solution for every business', before: 'Solutions for every', highlight: 'use case.', description: 'We adapt the hardware and software to each industry and business model to provide a secure, flexible and efficient self-service experience.', primary: 'Request a demo →', secondary: 'Explore solutions', imageAlt: 'BeLockey smart lockers with an integrated kiosk', notes: ['Solutions tailored to the business', 'Coordinated hardware and software', 'One or multiple locations'] },
+      tabs: ['Click & Collect', 'Luggage storage', 'Smart lockers', 'Key storage', 'Retail and e-commerce', 'Hotels and tourism', 'Companies', 'Transport', 'Gyms and centres'],
+      cases: { eyebrow: 'Featured solutions', title: 'Use cases that transform your operation.', copy: 'Explore the main solutions and find the approach that best fits your operation.', link: 'Learn more →', cards: [['Click & Collect', 'Deliver online orders and let customers collect them at their convenience.'], ['Luggage storage', 'Provide space for luggage with digital booking and self-service access.'], ['Smart lockers', 'A versatile solution for objects in public, commercial or high-traffic spaces.'], ['Key storage', 'Manage keys for rentals, fleets, service companies and other uses.']] },
+      sectors: { eyebrow: 'Solutions by industry', title: 'Your industry, our technology.', copy: 'Every industry has its own challenges. Configure the solution around its use, setting and operation.', link: 'View solution →', cards: [['Retail and e-commerce', 'Online order delivery, returns and collections.'], ['Hotels and tourism', 'Luggage storage and self-service access for guests.'], ['Companies', 'Management of belongings, work equipment and keys.'], ['Transport', 'Lockers in stations, airports and terminals.'], ['Gyms and centres', 'Lockers for members, visitors and staff.']] },
+      implementation: { eyebrow: 'Different implementation models', title: 'One solution, multiple ways to operate.', cards: [['Online bookings', 'Users book and pay from their mobile.'], ['On-site self-service', 'Access through the methods configured for the project.'], ['Remote control', 'Manage the operation from one platform.'], ['Multiple locations', 'Coordinate one or several locations in the same environment.']] },
+      includes: { eyebrow: 'Everything you need', title: 'What each solution includes.', copy: 'Combine the elements your project needs.', cards: [['Management software', 'Web dashboard and control tools.'], ['Smart hardware', 'Lockers, kiosks and access elements.'], ['Payments', 'Payment options within the configured flow.'], ['Permissions and users', 'Access control and roles.'], ['Configuration and support', 'Guidance based on the project scope.']] },
+      guide: { eyebrow: 'Decision guide', title: 'Find the right solution.', copy: 'Compare options by need, location and operating model.', headers: ['Solution', 'What it solves', 'Typical location', 'Operating model', 'Ideal for'], rows: [['Click & Collect', 'Order delivery and collection', 'Shops and shopping centres', 'Self-service', 'Retail and e-commerce'], ['Luggage storage', 'Storage for luggage and belongings', 'Hotels, stations and airports', 'Booking or self-service', 'Tourism and transport'], ['Smart lockers', 'Storage of objects', 'Public spaces and centres', 'Self-service', 'General use'], ['Key storage', 'Key management', 'Companies, rentals and services', 'Permission-based', 'Companies and services']] },
+      faq: { eyebrow: 'Frequently asked questions', title: 'Common questions about our solutions.', items: ['How is the right solution defined?', 'Can I adapt the size and number of lockers?', 'Which payment methods are available?', 'How is the launch planned?'] },
+      cta: { title: 'Shall we discuss your project?', copy: 'Tell us about your use case and we will help you define the solution.', primary: 'Request a demo →', secondary: 'View pricing' }
     },
     pricing: {
       metaTitle: 'Pricing · BeLockey', metaDescription: 'How a BeLockey proposal is structured.',
@@ -165,8 +195,8 @@ export const translations = {
   fr: {
     common: {
       navLabel: 'Navigation principale', menuOpen: 'Ouvrir le menu', menuClose: 'Fermer le menu', language: 'Langue',
-      nav: { product: 'Produit', pricing: 'Tarifs', contact: 'Contact', demo: 'Demander une démo →' },
-      footer: { description: 'Logiciel de gestion pour les entreprises utilisant des casiers intelligents.', productLinks: ['Vue d’ensemble', 'Marque et expérience', 'Opérations', 'Paiements et intégrations', 'Questions fréquentes'], pricingLinks: ['Composition du tarif', 'Facteurs de prix', 'Souscription', 'Questions fréquentes'], about: 'À propos', privacy: 'Politique de confidentialité', terms: 'Conditions générales', cookies: 'Cookies', signature: 'Design web · Système visuel BeLockey' }
+      nav: { product: 'Produit', solutions: 'Solutions', pricing: 'Tarifs', contact: 'Contact', demo: 'Demander une démo →' },
+      footer: { description: 'Logiciel de gestion pour les entreprises utilisant des casiers intelligents.', productLinks: ['Vue d’ensemble', 'Marque et expérience', 'Opérations', 'Paiements et intégrations', 'Questions fréquentes'], solutionLinks: ['Cas d’usage', 'Secteurs', 'Mise en œuvre', 'Guide de décision'], pricingLinks: ['Composition du tarif', 'Facteurs de prix', 'Souscription', 'Questions fréquentes'], about: 'À propos', privacy: 'Politique de confidentialité', terms: 'Conditions générales', cookies: 'Cookies', signature: 'Design web · Système visuel BeLockey' }
     },
     product: {
       metaTitle: 'Produit · BeLockey', metaDescription: 'La plateforme BeLockey pour gérer les casiers intelligents.',
@@ -177,6 +207,18 @@ export const translations = {
       integrations: { eyebrow: 'Paiements et intégrations', title: 'Connectez vos opérations à vos outils.', copy: 'BeLockey intègre les paiements au parcours de réservation et permet de connecter la plateforme à des services externes.', cards: [['Stripe', 'Intégration du paiement dans le processus de réservation.'], ['PayPal', 'Une option de paiement intégrée à vos opérations.'], ['myPOS', 'Intégration à l’écosystème de paiement utilisé par votre entreprise.']] },
       faq: { title: 'Questions sur le produit.', items: ['Puis-je gérer plusieurs sites ?', 'Les clients peuvent-ils réserver en ligne ?', 'Puis-je utiliser une borne sur place ?', 'Comment superviser l’état d’une borne ?'] },
       cta: { eyebrow: 'Découvrez BeLockey', title: 'Vous souhaitez le voir fonctionner dans votre entreprise ?', copy: 'Demandez une démo et examinons ensemble le parcours dont vous avez besoin.', button: 'Demander une démo →' }
+    },
+    solutions: {
+      metaTitle: 'Solutions · BeLockey', metaDescription: 'Solutions de casiers intelligents pour différents usages et secteurs.',
+      hero: { eyebrow: 'Une solution pour chaque entreprise', before: 'Des solutions pour chaque', highlight: 'cas d’usage.', description: 'Nous adaptons le matériel et le logiciel à chaque secteur et modèle économique pour proposer une expérience en libre-service sûre, flexible et efficace.', primary: 'Demander une démo →', secondary: 'Explorer les solutions', imageAlt: 'Casiers intelligents BeLockey avec borne intégrée', notes: ['Solutions adaptées à l’entreprise', 'Matériel et logiciel coordonnés', 'Un ou plusieurs sites'] },
+      tabs: ['Click & Collect', 'Consigne à bagages', 'Casiers intelligents', 'Consigne de clés', 'Retail et e-commerce', 'Hôtels et tourisme', 'Entreprises', 'Transport', 'Salles de sport et centres'],
+      cases: { eyebrow: 'Solutions à la une', title: 'Des cas d’usage qui transforment vos opérations.', copy: 'Explorez les principales solutions et trouvez l’approche adaptée à vos opérations.', link: 'En savoir plus →', cards: [['Click & Collect', 'Livrez les commandes en ligne et laissez les clients les retirer quand ils le souhaitent.'], ['Consigne à bagages', 'Proposez un espace pour les bagages avec réservation numérique et accès autonome.'], ['Casiers intelligents', 'Une solution polyvalente pour les objets dans les espaces publics, commerciaux ou très fréquentés.'], ['Consigne de clés', 'Gérez les clés pour les locations, flottes, sociétés de services et autres usages.']] },
+      sectors: { eyebrow: 'Solutions par secteur', title: 'Votre secteur, notre technologie.', copy: 'Chaque secteur a ses propres défis. Configurez la solution selon l’usage, l’environnement et les opérations.', link: 'Voir la solution →', cards: [['Retail et e-commerce', 'Livraison de commandes en ligne, retours et retraits.'], ['Hôtels et tourisme', 'Consigne à bagages et accès autonome pour les clients.'], ['Entreprises', 'Gestion des effets personnels, équipements et clés.'], ['Transport', 'Casiers dans les gares, aéroports et terminaux.'], ['Salles de sport et centres', 'Casiers pour les membres, visiteurs et équipes.']] },
+      implementation: { eyebrow: 'Différents modèles de mise en œuvre', title: 'Une solution, plusieurs modes de fonctionnement.', cards: [['Réservations en ligne', 'Les utilisateurs réservent et paient depuis leur mobile.'], ['Libre-service sur site', 'Accès via les méthodes configurées pour le projet.'], ['Contrôle à distance', 'Gérez les opérations depuis une plateforme unique.'], ['Multi-sites', 'Coordonnez un ou plusieurs sites dans le même environnement.']] },
+      includes: { eyebrow: 'Tout ce dont vous avez besoin', title: 'Ce que comprend chaque solution.', copy: 'Combinez les éléments nécessaires à votre projet.', cards: [['Logiciel de gestion', 'Tableau de bord web et outils de contrôle.'], ['Matériel intelligent', 'Casiers, bornes et éléments d’accès.'], ['Paiements', 'Options de paiement intégrées au parcours configuré.'], ['Autorisations et utilisateurs', 'Contrôle des accès et rôles.'], ['Configuration et assistance', 'Accompagnement selon le périmètre du projet.']] },
+      guide: { eyebrow: 'Guide de décision', title: 'Trouvez la solution adaptée.', copy: 'Comparez les options selon le besoin, le lieu et le modèle opérationnel.', headers: ['Solution', 'Besoin couvert', 'Lieu habituel', 'Modèle opérationnel', 'Idéal pour'], rows: [['Click & Collect', 'Livraison et retrait de commandes', 'Magasins et centres commerciaux', 'Libre-service', 'Retail et e-commerce'], ['Consigne à bagages', 'Garde de bagages et d’effets personnels', 'Hôtels, gares et aéroports', 'Avec réservation ou autonome', 'Tourisme et transport'], ['Casiers intelligents', 'Garde d’objets', 'Espaces publics et centres', 'Libre-service', 'Usage général'], ['Consigne de clés', 'Gestion des clés', 'Entreprises, locations et services', 'Avec autorisations', 'Entreprises et services']] },
+      faq: { eyebrow: 'Questions fréquentes', title: 'Questions courantes sur nos solutions.', items: ['Comment définir la bonne solution ?', 'Puis-je adapter la taille et le nombre de casiers ?', 'Quels moyens de paiement sont disponibles ?', 'Comment la mise en service est-elle organisée ?'] },
+      cta: { title: 'Parlons de votre projet.', copy: 'Présentez-nous votre usage et nous vous aiderons à définir la solution.', primary: 'Demander une démo →', secondary: 'Voir les tarifs' }
     },
     pricing: {
       metaTitle: 'Tarifs · BeLockey', metaDescription: 'Comment se compose une proposition BeLockey.',
@@ -205,8 +247,8 @@ export const translations = {
   de: {
     common: {
       navLabel: 'Hauptnavigation', menuOpen: 'Menü öffnen', menuClose: 'Menü schließen', language: 'Sprache',
-      nav: { product: 'Produkt', pricing: 'Preise', contact: 'Kontakt', demo: 'Demo anfragen →' },
-      footer: { description: 'Software zur Verwaltung von Unternehmen mit intelligenten Schließfächern.', productLinks: ['Überblick', 'Marke und Erlebnis', 'Betrieb', 'Zahlungen und Integrationen', 'Häufige Fragen'], pricingLinks: ['Preisaufbau', 'Preisfaktoren', 'Beauftragung', 'Häufige Fragen'], about: 'Über uns', privacy: 'Datenschutzerklärung', terms: 'Allgemeine Geschäftsbedingungen', cookies: 'Cookies', signature: 'Webdesign · BeLockey Gestaltungssystem' }
+      nav: { product: 'Produkt', solutions: 'Lösungen', pricing: 'Preise', contact: 'Kontakt', demo: 'Demo anfragen →' },
+      footer: { description: 'Software zur Verwaltung von Unternehmen mit intelligenten Schließfächern.', productLinks: ['Überblick', 'Marke und Erlebnis', 'Betrieb', 'Zahlungen und Integrationen', 'Häufige Fragen'], solutionLinks: ['Anwendungsfälle', 'Branchen', 'Implementierung', 'Entscheidungshilfe'], pricingLinks: ['Preisaufbau', 'Preisfaktoren', 'Beauftragung', 'Häufige Fragen'], about: 'Über uns', privacy: 'Datenschutzerklärung', terms: 'Allgemeine Geschäftsbedingungen', cookies: 'Cookies', signature: 'Webdesign · BeLockey Gestaltungssystem' }
     },
     product: {
       metaTitle: 'Produkt · BeLockey', metaDescription: 'Die BeLockey-Plattform zur Verwaltung intelligenter Schließfächer.',
@@ -217,6 +259,18 @@ export const translations = {
       integrations: { eyebrow: 'Zahlungen und Integrationen', title: 'Verbinden Sie den Betrieb mit Ihren Tools.', copy: 'BeLockey bindet Zahlungen in den Buchungsablauf ein und ermöglicht die Verbindung der Plattform mit externen Diensten.', cards: [['Stripe', 'Zahlungsintegration innerhalb des Buchungsprozesses.'], ['PayPal', 'Eine integrierte Zahlungsoption für Ihren Betrieb.'], ['myPOS', 'Integration in das von Ihrem Unternehmen genutzte Zahlungsumfeld.']] },
       faq: { title: 'Fragen zum Produkt.', items: ['Kann ich mehrere Standorte verwalten?', 'Können Kunden online buchen?', 'Kann ich vor Ort ein Terminal einsetzen?', 'Wie wird der Status eines Terminals überwacht?'] },
       cta: { eyebrow: 'BeLockey kennenlernen', title: 'Möchten Sie es in Ihrem Unternehmen in Aktion sehen?', copy: 'Fordern Sie eine Demo an und besprechen Sie mit uns den benötigten Ablauf.', button: 'Demo anfragen →' }
+    },
+    solutions: {
+      metaTitle: 'Lösungen · BeLockey', metaDescription: 'Intelligente Schließfachlösungen für verschiedene Anwendungen und Branchen.',
+      hero: { eyebrow: 'Eine Lösung für jedes Unternehmen', before: 'Lösungen für jeden', highlight: 'Anwendungsfall.', description: 'Wir passen Hardware und Software an Branche und Geschäftsmodell an – für ein sicheres, flexibles und effizientes Selbstbedienungserlebnis.', primary: 'Demo anfragen →', secondary: 'Lösungen entdecken', imageAlt: 'Intelligente BeLockey-Schließfächer mit integriertem Terminal', notes: ['An das Unternehmen angepasste Lösungen', 'Abgestimmte Hard- und Software', 'Ein oder mehrere Standorte'] },
+      tabs: ['Click & Collect', 'Gepäckaufbewahrung', 'Intelligente Schließfächer', 'Schlüsselaufbewahrung', 'Einzelhandel und E-Commerce', 'Hotels und Tourismus', 'Unternehmen', 'Verkehr', 'Fitnessstudios und Zentren'],
+      cases: { eyebrow: 'Ausgewählte Lösungen', title: 'Anwendungsfälle, die Ihren Betrieb verändern.', copy: 'Entdecken Sie die wichtigsten Lösungen und finden Sie den passenden Ansatz für Ihren Betrieb.', link: 'Mehr erfahren →', cards: [['Click & Collect', 'Stellen Sie Online-Bestellungen bereit und ermöglichen Sie eine flexible Abholung.'], ['Gepäckaufbewahrung', 'Bieten Sie Platz für Gepäck mit digitaler Buchung und selbstständigem Zugang.'], ['Intelligente Schließfächer', 'Eine vielseitige Lösung für Gegenstände in öffentlichen, gewerblichen oder stark frequentierten Bereichen.'], ['Schlüsselaufbewahrung', 'Verwalten Sie Schlüssel für Vermietungen, Flotten, Dienstleister und weitere Anwendungen.']] },
+      sectors: { eyebrow: 'Lösungen nach Branche', title: 'Ihre Branche, unsere Technologie.', copy: 'Jede Branche hat eigene Anforderungen. Konfigurieren Sie die Lösung passend zu Nutzung, Umgebung und Betrieb.', link: 'Lösung ansehen →', cards: [['Einzelhandel und E-Commerce', 'Bereitstellung, Rückgabe und Abholung von Online-Bestellungen.'], ['Hotels und Tourismus', 'Gepäckaufbewahrung und selbstständiger Zugang für Gäste.'], ['Unternehmen', 'Verwaltung von Gegenständen, Arbeitsmitteln und Schlüsseln.'], ['Verkehr', 'Schließfächer an Bahnhöfen, Flughäfen und Terminals.'], ['Fitnessstudios und Zentren', 'Schließfächer für Mitglieder, Besucher und Personal.']] },
+      implementation: { eyebrow: 'Verschiedene Implementierungsmodelle', title: 'Eine Lösung, mehrere Betriebsmodelle.', cards: [['Online-Buchungen', 'Nutzer buchen und bezahlen mobil.'], ['Selbstbedienung vor Ort', 'Zugang über die für das Projekt konfigurierten Methoden.'], ['Fernsteuerung', 'Verwalten Sie den Betrieb über eine zentrale Plattform.'], ['Mehrere Standorte', 'Koordinieren Sie einen oder mehrere Standorte in derselben Umgebung.']] },
+      includes: { eyebrow: 'Alles, was Sie benötigen', title: 'Bestandteile jeder Lösung.', copy: 'Kombinieren Sie die Elemente, die Ihr Projekt benötigt.', cards: [['Verwaltungssoftware', 'Web-Dashboard und Steuerungswerkzeuge.'], ['Intelligente Hardware', 'Schließfächer, Terminals und Zugangselemente.'], ['Zahlungen', 'Zahlungsoptionen innerhalb des konfigurierten Ablaufs.'], ['Berechtigungen und Nutzer', 'Zugangssteuerung und Rollen.'], ['Konfiguration und Support', 'Begleitung passend zum Projektumfang.']] },
+      guide: { eyebrow: 'Entscheidungshilfe', title: 'Finden Sie die passende Lösung.', copy: 'Vergleichen Sie die Optionen nach Bedarf, Standort und Betriebsmodell.', headers: ['Lösung', 'Gelöster Bedarf', 'Typischer Standort', 'Betriebsmodell', 'Ideal für'], rows: [['Click & Collect', 'Bereitstellung und Abholung von Bestellungen', 'Geschäfte und Einkaufszentren', 'Selbstbedienung', 'Einzelhandel und E-Commerce'], ['Gepäckaufbewahrung', 'Aufbewahrung von Gepäck und Gegenständen', 'Hotels, Bahnhöfe und Flughäfen', 'Mit Buchung oder selbstständig', 'Tourismus und Verkehr'], ['Intelligente Schließfächer', 'Aufbewahrung von Gegenständen', 'Öffentliche Bereiche und Zentren', 'Selbstbedienung', 'Allgemeine Nutzung'], ['Schlüsselaufbewahrung', 'Schlüsselverwaltung', 'Unternehmen, Vermietungen und Dienste', 'Berechtigungsbasiert', 'Unternehmen und Dienste']] },
+      faq: { eyebrow: 'Häufige Fragen', title: 'Häufige Fragen zu unseren Lösungen.', items: ['Wie wird die passende Lösung bestimmt?', 'Kann ich Größe und Anzahl der Schließfächer anpassen?', 'Welche Zahlungsmethoden sind verfügbar?', 'Wie wird die Inbetriebnahme geplant?'] },
+      cta: { title: 'Sprechen wir über Ihr Projekt.', copy: 'Beschreiben Sie Ihren Anwendungsfall – wir helfen Ihnen, die Lösung zu definieren.', primary: 'Demo anfragen →', secondary: 'Preise ansehen' }
     },
     pricing: {
       metaTitle: 'Preise · BeLockey', metaDescription: 'So setzt sich ein Angebot von BeLockey zusammen.',

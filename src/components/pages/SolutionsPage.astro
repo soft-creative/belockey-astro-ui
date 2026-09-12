@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import { paths, translations, type Locale } from '../../i18n';
+
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const t = translations[lang].solutions;
+const tabIcons = ['⌁', '▣', '◇', '⚿', '▢', '✈', '▤', '▥', '⌘'];
+const implementationIcons = ['▣', '⌂', '▤', '⌘'];
+const includeIcons = ['▤', '▥', '▱', '♙', '◔'];
+const caseImages = ['/assets/solution-card-1.jpg', '/assets/solution-card-2.jpg', '/assets/solution-card-3.jpg', '/assets/solution-card-4.jpg'];
+const sectorImages = ['/assets/sector-1.jpg', '/assets/sector-2.jpg', '/assets/sector-3.jpg', '/assets/sector-4.jpg', '/assets/sector-5.jpg'];
+---
+<BaseLayout title={t.metaTitle} description={t.metaDescription} lang={lang} page="solutions">
+  <Header active="soluciones" lang={lang} page="solutions" />
+  <main class="solutions-page">
+    <section class="solutions-hero">
+      <div class="container solutions-hero-grid">
+        <div class="solutions-hero-copy">
+          <div class="eyebrow">{t.hero.eyebrow}</div>
+          <h1>{t.hero.before} <span class="blue">{t.hero.highlight}</span></h1>
+          <p>{t.hero.description}</p>
+          <div class="actions">
+            <a class="btn primary" href={`${paths[lang].contact}#formulario`}>{t.hero.primary}</a>
+            <a class="btn secondary" href="#casos">{t.hero.secondary}</a>
+          </div>
+          <div class="solutions-hero-notes">
+            {t.hero.notes.map((note, index) => <div><span class="solution-note-icon" aria-hidden="true">{implementationIcons[index]}</span><span>{note}</span></div>)}
+          </div>
+        </div>
+        <div class="solutions-hero-media"><img src="/assets/hero-solutions.webp" alt={t.hero.imageAlt} width="485" height="287" fetchpriority="high" /></div>
+      </div>
+    </section>
+
+    <nav class="solution-tabs" aria-label={t.cases.eyebrow}>
+      <div class="container solution-tabs-track">
+        {t.tabs.map((tab, index) => <a class:list={{ active: index === 0 }} href={index < 4 ? '#casos' : '#sectores'}><span aria-hidden="true">{tabIcons[index]}</span>{tab}</a>)}
+      </div>
+    </nav>
+
+    <section class="section solutions-section" id="casos">
+      <div class="container">
+        <div class="section-head"><div><div class="eyebrow">{t.cases.eyebrow}</div><h2>{t.cases.title}</h2></div><p>{t.cases.copy}</p></div>
+        <div class="solution-case-grid">
+          {t.cases.cards.map(([title, copy], index) => <article class="solution-photo-card"><img src={caseImages[index]} alt={title} width="320" height="130" loading="lazy"/><div><h3>{title}</h3><p>{copy}</p><a href="#guia">{t.cases.link}</a></div></article>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft solutions-section" id="sectores">
+      <div class="container">
+        <div class="section-head"><div><div class="eyebrow">{t.sectors.eyebrow}</div><h2>{t.sectors.title}</h2></div><p>{t.sectors.copy}</p></div>
+        <div class="solution-sector-grid">
+          {t.sectors.cards.map(([title, copy], index) => <article class="solution-photo-card sector"><img src={sectorImages[index]} alt={title} width="260" height="120" loading="lazy"/><div><h3>{title}</h3><p>{copy}</p><a href="#guia">{t.sectors.link}</a></div></article>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section solutions-section" id="implementacion">
+      <div class="container">
+        <div class="section-head compact-head"><div><div class="eyebrow">{t.implementation.eyebrow}</div><h2>{t.implementation.title}</h2></div></div>
+        <div class="solution-feature-grid">{t.implementation.cards.map(([title, copy], index) => <article class="solution-feature"><span class="solution-feature-icon" aria-hidden="true">{implementationIcons[index]}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}</div>
+      </div>
+    </section>
+
+    <section class="section soft solutions-section solution-includes">
+      <div class="container">
+        <div class="section-head"><div><div class="eyebrow">{t.includes.eyebrow}</div><h2>{t.includes.title}</h2></div><p>{t.includes.copy}</p></div>
+        <div class="solution-include-grid">{t.includes.cards.map(([title, copy], index) => <article class="solution-include-card"><span class="solution-feature-icon" aria-hidden="true">{includeIcons[index]}</span><h3>{title}</h3><p>{copy}</p></article>)}</div>
+      </div>
+    </section>
+
+    <section class="section solutions-section" id="guia">
+      <div class="container">
+        <div class="section-head"><div><div class="eyebrow">{t.guide.eyebrow}</div><h2>{t.guide.title}</h2></div><p>{t.guide.copy}</p></div>
+        <div class="solution-table-wrap"><table><thead><tr>{t.guide.headers.map((header) => <th scope="col">{header}</th>)}</tr></thead><tbody>{t.guide.rows.map((row) => <tr>{row.map((cell, index) => index === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>)}</tr>)}</tbody></table></div>
+      </div>
+    </section>
+
+    <section class="section soft solutions-section" id="faq">
+      <div class="container solution-faq-layout"><div><div class="eyebrow">{t.faq.eyebrow}</div><h2>{t.faq.title}</h2></div><div class="faq">{t.faq.items.map((item) => <div class="item"><span>{item}</span><span>+</span></div>)}</div></div>
+    </section>
+
+    <section class="section compact"><div class="container"><div class="solutions-cta"><div><h2>{t.cta.title}</h2><p>{t.cta.copy}</p><div class="actions"><a class="btn primary" href={`${paths[lang].contact}#formulario`}>{t.cta.primary}</a><a class="btn secondary" href={paths[lang].pricing}>{t.cta.secondary}</a></div></div><img src="/assets/hero-solutions.webp" alt="" width="485" height="287" loading="lazy"/></div></div></section>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
