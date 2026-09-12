@@ -2,6 +2,7 @@ export const locales = ['es', 'en', 'fr', 'de'] as const;
 export type Locale = (typeof locales)[number];
 
 export type PageKey =
+  | 'home'
   | 'product'
   | 'solutions'
   | 'pricing'
@@ -22,6 +23,7 @@ export const localeNames: Record<Locale, string> = {
 
 export const paths: Record<Locale, Record<PageKey, string>> = {
   es: {
+    home: '/',
     product: '/producto',
     solutions: '/soluciones',
     pricing: '/precios',
@@ -32,8 +34,9 @@ export const paths: Record<Locale, Record<PageKey, string>> = {
     chatbotPrivacy: '/politica-de-privacidad-del-chatbot-de-belockey'
   },
   en: {
+    home: '/en',
     product: '/en/product',
-    solutions: '/en/solutions',
+    solutions: '/soluciones',
     pricing: '/en/pricing',
     contact: '/en/contact',
     privacy: '/en/privacy',
@@ -42,8 +45,9 @@ export const paths: Record<Locale, Record<PageKey, string>> = {
     chatbotPrivacy: '/en/chatbot-privacy'
   },
   fr: {
+    home: '/fr',
     product: '/fr/produit',
-    solutions: '/fr/solutions',
+    solutions: '/soluciones',
     pricing: '/fr/tarifs',
     contact: '/fr/contact',
     privacy: '/fr/confidentialite',
@@ -52,8 +56,9 @@ export const paths: Record<Locale, Record<PageKey, string>> = {
     chatbotPrivacy: '/fr/confidentialite-chatbot'
   },
   de: {
+    home: '/de',
     product: '/de/produkt',
-    solutions: '/de/loesungen',
+    solutions: '/soluciones',
     pricing: '/de/preise',
     contact: '/de/kontakt',
     privacy: '/de/datenschutz',
@@ -110,7 +115,7 @@ export const translations = {
       faq: { title: 'Preguntas sobre el producto.', items: ['¿Puedo gestionar varias ubicaciones?', '¿Los clientes pueden reservar online?', '¿Puedo utilizar un kiosco en el local?', '¿Cómo se monitoriza el estado de un kiosco?'] },
       cta: { eyebrow: 'Conoce BeLockey', title: '¿Quieres verlo funcionando en tu negocio?', copy: 'Solicita una demo y revisamos contigo el flujo que necesitas.', button: 'Solicitar demo →' }
     },
-    solutions: {
+    home: {
       metaTitle: 'Soluciones · BeLockey', metaDescription: 'Soluciones de lockers inteligentes para distintos casos de uso y sectores.',
       hero: { eyebrow: 'Una solución para cada negocio', before: 'Soluciones para cada', highlight: 'caso de uso.', description: 'Adaptamos el hardware y el software a las necesidades de cada sector y modelo de negocio para ofrecer una experiencia de autoservicio segura, flexible y eficiente.', primary: 'Solicitar demo →', secondary: 'Explorar soluciones', imageAlt: 'Lockers inteligentes BeLockey con kiosco integrado', notes: ['Soluciones adaptadas al negocio', 'Hardware y software coordinados', 'Una o múltiples ubicaciones'] },
       tabs: ['Click & Collect', 'Custodia de equipaje', 'Consignas inteligentes', 'Custodia de llaves', 'Retail y e-commerce', 'Hoteles y turismo', 'Empresas', 'Transporte', 'Gimnasios y centros'],
@@ -156,7 +161,7 @@ export const translations = {
       faq: { title: 'Product questions.', items: ['Can I manage several locations?', 'Can customers book online?', 'Can I use a kiosk on site?', 'How is a kiosk’s status monitored?'] },
       cta: { eyebrow: 'Discover BeLockey', title: 'Would you like to see it working in your business?', copy: 'Request a demo and we will review the flow you need with you.', button: 'Request a demo →' }
     },
-    solutions: {
+    home: {
       metaTitle: 'Solutions · BeLockey', metaDescription: 'Smart locker solutions for different use cases and industries.',
       hero: { eyebrow: 'A solution for every business', before: 'Solutions for every', highlight: 'use case.', description: 'We adapt the hardware and software to each industry and business model to provide a secure, flexible and efficient self-service experience.', primary: 'Request a demo →', secondary: 'Explore solutions', imageAlt: 'BeLockey smart lockers with an integrated kiosk', notes: ['Solutions tailored to the business', 'Coordinated hardware and software', 'One or multiple locations'] },
       tabs: ['Click & Collect', 'Luggage storage', 'Smart lockers', 'Key storage', 'Retail and e-commerce', 'Hotels and tourism', 'Companies', 'Transport', 'Gyms and centres'],
@@ -208,7 +213,7 @@ export const translations = {
       faq: { title: 'Questions sur le produit.', items: ['Puis-je gérer plusieurs sites ?', 'Les clients peuvent-ils réserver en ligne ?', 'Puis-je utiliser une borne sur place ?', 'Comment superviser l’état d’une borne ?'] },
       cta: { eyebrow: 'Découvrez BeLockey', title: 'Vous souhaitez le voir fonctionner dans votre entreprise ?', copy: 'Demandez une démo et examinons ensemble le parcours dont vous avez besoin.', button: 'Demander une démo →' }
     },
-    solutions: {
+    home: {
       metaTitle: 'Solutions · BeLockey', metaDescription: 'Solutions de casiers intelligents pour différents usages et secteurs.',
       hero: { eyebrow: 'Une solution pour chaque entreprise', before: 'Des solutions pour chaque', highlight: 'cas d’usage.', description: 'Nous adaptons le matériel et le logiciel à chaque secteur et modèle économique pour proposer une expérience en libre-service sûre, flexible et efficace.', primary: 'Demander une démo →', secondary: 'Explorer les solutions', imageAlt: 'Casiers intelligents BeLockey avec borne intégrée', notes: ['Solutions adaptées à l’entreprise', 'Matériel et logiciel coordonnés', 'Un ou plusieurs sites'] },
       tabs: ['Click & Collect', 'Consigne à bagages', 'Casiers intelligents', 'Consigne de clés', 'Retail et e-commerce', 'Hôtels et tourisme', 'Entreprises', 'Transport', 'Salles de sport et centres'],
@@ -260,7 +265,7 @@ export const translations = {
       faq: { title: 'Fragen zum Produkt.', items: ['Kann ich mehrere Standorte verwalten?', 'Können Kunden online buchen?', 'Kann ich vor Ort ein Terminal einsetzen?', 'Wie wird der Status eines Terminals überwacht?'] },
       cta: { eyebrow: 'BeLockey kennenlernen', title: 'Möchten Sie es in Ihrem Unternehmen in Aktion sehen?', copy: 'Fordern Sie eine Demo an und besprechen Sie mit uns den benötigten Ablauf.', button: 'Demo anfragen →' }
     },
-    solutions: {
+    home: {
       metaTitle: 'Lösungen · BeLockey', metaDescription: 'Intelligente Schließfachlösungen für verschiedene Anwendungen und Branchen.',
       hero: { eyebrow: 'Eine Lösung für jedes Unternehmen', before: 'Lösungen für jeden', highlight: 'Anwendungsfall.', description: 'Wir passen Hardware und Software an Branche und Geschäftsmodell an – für ein sicheres, flexibles und effizientes Selbstbedienungserlebnis.', primary: 'Demo anfragen →', secondary: 'Lösungen entdecken', imageAlt: 'Intelligente BeLockey-Schließfächer mit integriertem Terminal', notes: ['An das Unternehmen angepasste Lösungen', 'Abgestimmte Hard- und Software', 'Ein oder mehrere Standorte'] },
       tabs: ['Click & Collect', 'Gepäckaufbewahrung', 'Intelligente Schließfächer', 'Schlüsselaufbewahrung', 'Einzelhandel und E-Commerce', 'Hotels und Tourismus', 'Unternehmen', 'Verkehr', 'Fitnessstudios und Zentren'],

@@ -6,15 +6,15 @@ import { paths, translations, type Locale } from '../../i18n';
 
 interface Props { lang: Locale; }
 const { lang } = Astro.props;
-const t = translations[lang].solutions;
+const t = translations[lang].home;
 const tabIcons = ['⌁', '▣', '◇', '⚿', '▢', '✈', '▤', '▥', '⌘'];
 const implementationIcons = ['▣', '⌂', '▤', '⌘'];
 const includeIcons = ['▤', '▥', '▱', '♙', '◔'];
 const caseImages = ['/assets/solution-card-1.jpg', '/assets/solution-card-2.jpg', '/assets/solution-card-3.jpg', '/assets/solution-card-4.jpg'];
 const sectorImages = ['/assets/sector-1.jpg', '/assets/sector-2.jpg', '/assets/sector-3.jpg', '/assets/sector-4.jpg', '/assets/sector-5.jpg'];
 ---
-<BaseLayout title={t.metaTitle} description={t.metaDescription} lang={lang} page="solutions">
-  <Header active="soluciones" lang={lang} page="solutions" />
+<BaseLayout title={t.metaTitle} description={t.metaDescription} lang={lang} page="home">
+  <Header lang={lang} page="home" />
   <main class="solutions-page">
     <section class="solutions-hero">
       <div class="container solutions-hero-grid">
