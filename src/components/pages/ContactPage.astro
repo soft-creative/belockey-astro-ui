@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import { translations, type Locale } from '../../i18n';
+
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const t = translations[lang].contact;
+const cardIcons = ['▦', '◫', '▶'];
+---
+<BaseLayout title={t.metaTitle} description={t.metaDescription} lang={lang} page="contact">
+  <Header active="contacto" lang={lang} page="contact" />
+  <main>
+    <section class="legal-hero"><div class="container"><div class="eyebrow">{t.hero.eyebrow}</div><h1 class="contact-title">{t.hero.before} <span class="blue">{t.hero.highlight}</span></h1><p class="lead contact-lead">{t.hero.copy}</p></div></section>
+    <section class="section" id="formulario"><div class="container"><div class="form-grid"><div class="card"><h2 class="contact-form-title">{t.form.title}</h2><p>{t.form.copy}</p><div class="grid2 contact-fields"><div><div class="field-label">{t.form.name}</div><div class="input">{t.form.namePlaceholder}</div></div><div><div class="field-label">{t.form.email}</div><div class="input">your@email.com</div></div><div><div class="field-label">{t.form.company}</div><div class="input">{t.form.companyPlaceholder}</div></div><div><div class="field-label">{t.form.topic}</div><div class="select">{t.form.topicPlaceholder}</div></div></div><div class="contact-message"><div class="field-label">{t.form.message}</div><div class="textarea">{t.form.messagePlaceholder}</div></div><div class="actions contact-submit"><a class="btn primary" href="#formulario">{t.form.send}</a></div></div><aside class="contact-side"><div class="eyebrow">{t.aside.eyebrow}</div><h3>{t.aside.title}</h3><div class="bullets">{t.aside.items.map((item) => <div><span class="check">✓</span>{item}</div>)}</div><hr/><p>{t.aside.note}</p></aside></div></div></section>
+    <section class="section soft"><div class="container"><div class="grid3">{t.cards.map(([title, copy], index) => <div class="card"><div class="icon">{cardIcons[index]}</div><h3>{title}</h3><p>{copy}</p></div>)}</div></div></section>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>

@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import LockerVisual from '../LockerVisual.astro';
+import { paths, translations, type Locale } from '../../i18n';
+
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const t = translations[lang].pricing;
+const compositionIcons = ['▦', '◫', '◎'];
+const factorIcons = ['▦', '⌖', '◫', '⌁', '◎'];
+---
+<BaseLayout title={t.metaTitle} description={t.metaDescription} lang={lang} page="pricing">
+  <Header active="precios" lang={lang} page="pricing" />
+  <main>
+    <section class="hero"><div class="container hero-grid"><div class="hero-copy"><div class="eyebrow">{t.hero.eyebrow}</div><h1>{t.hero.before} <span class="blue">{t.hero.highlight}</span></h1><p>{t.hero.description}</p><div class="actions"><a class="btn primary" href={`${paths[lang].contact}#formulario`}>{t.hero.primary}</a><a class="btn secondary" href="#composicion">{t.hero.secondary}</a></div></div><LockerVisual /></div></section>
+
+    <section class="section" id="composicion"><div class="container"><div class="section-head"><div><div class="eyebrow">{t.composition.eyebrow}</div><h2>{t.composition.title}</h2></div><p>{t.composition.copy}</p></div><div class="grid3">{t.composition.cards.map(([title, copy, bullets], index) => <div class:list={['price-box', { featured: index === 1 }]}><div class="icon">{compositionIcons[index]}</div><div class="price-title">{title}</div><p class="price-note">{copy}</p><div class="bullets">{bullets.map((bullet) => <div><span class="check">✓</span>{bullet}</div>)}</div></div>)}</div></div></section>
+
+    <section class="section soft" id="factores"><div class="container"><div class="section-head"><div><div class="eyebrow">{t.factors.eyebrow}</div><h2>{t.factors.title}</h2></div><p>{t.factors.copy}</p></div><div class="factor-grid">{t.factors.cards.map(([title, copy], index) => <div class="factor"><div class="icon">{factorIcons[index]}</div><b>{title}</b><p>{copy}</p></div>)}</div></div></section>
+
+    <section class="section" id="contratacion"><div class="container"><div class="grid2"><div><div class="eyebrow">{t.hiring.eyebrow}</div><h2>{t.hiring.title}</h2><p class="lead">{t.hiring.copy}</p><div class="actions"><a class="btn primary" href={`${paths[lang].contact}#formulario`}>{t.hiring.button}</a></div></div><div class="brand-panel"><h3>{t.hiring.dataTitle}</h3>{t.hiring.rows.map(([label, value]) => <div class="row"><b>{label}</b><span class="muted">{value}</span></div>)}</div></div></div></section>
+
+    <section class="section soft" id="faq"><div class="container"><div class="section-head"><div><div class="eyebrow">FAQ</div><h2>{t.faq.title}</h2></div></div><div class="faq">{t.faq.items.map((item) => <div class="item"><span>{item}</span><span>+</span></div>)}</div></div></section>
+    <section class="section compact"><div class="container"><div class="callout"><h2>{t.cta}</h2><a class="btn primary" href={`${paths[lang].contact}#formulario`}>{t.hero.primary}</a></div></div></section>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>

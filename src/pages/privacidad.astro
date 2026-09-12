@@ -1,12 +1,4 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import LegalPage from '../components/LegalPage.astro';
-const sections = ["1. Quiénes somos", "2. Qué recogemos, y por qué", "3. Bases jurídicas bajo el RGPD", "4. Dónde se guarda", "5. Cuánto tiempo lo conservamos", "6. Tus derechos", "7. Compartición con terceros", "8. Menores", "9. Cambios en esta política", "10. Contacto"];
+import LocalizedLegalPage from '../components/pages/LocalizedLegalPage.astro';
 ---
-<BaseLayout title="Política de privacidad · BeLockey">
-  <Header />
-  <LegalPage title="Política de privacidad" intro="Estructura visual para el contenido legal aprobado de BeLockey." sections={sections} />
-  <Footer />
-</BaseLayout>
+<LocalizedLegalPage lang="es" page="privacy" />

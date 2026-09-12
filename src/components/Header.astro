@@ -1,27 +1,47 @@
 ---
+import { localeNames, locales, paths, translations, type Locale, type PageKey } from '../i18n';
 interface Props {
   active?: 'producto' | 'precios' | 'contacto';
+  lang?: Locale;
+  page?: PageKey;
 }
-const { active } = Astro.props;
+const { active, lang = 'es', page = 'product' } = Astro.props;
+const t = translations[lang].common;
+const activeKey = active === 'producto' ? 'product' : active === 'precios' ? 'pricing' : active === 'contacto' ? 'contact' : undefined;
+const contactFormHref = `${paths[lang].contact}#formulario`;
+const languageOptions = locales.map((locale) => ({ locale, name: localeNames[locale], href: paths[locale][page] }));
 ---
 <header>
   <div class="container nav">
-    <a class="brand-logo" href="/producto" aria-label="BeLockey - Producto">
+    <a class="brand-logo" href={paths[lang].product} aria-label={`BeLockey - ${t.nav.product}`}>
       <img src="/assets/belockey-logo.png" alt="BeLockey" />
     </a>
-    <nav class="menu" aria-label="Navegación principal">
-      <a class:list={{ active: active === 'producto' }} href="/producto">Producto</a>
-      <a class:list={{ active: active === 'precios' }} href="/precios">Precios</a>
-      <a class:list={{ active: active === 'contacto' }} href="/contacto">Contacto</a>
+    <nav class="menu" aria-label={t.navLabel}>
+      <a class:list={{ active: activeKey === 'product' }} href={paths[lang].product}>{t.nav.product}</a>
+      <a class:list={{ active: activeKey === 'pricing' }} href={paths[lang].pricing}>{t.nav.pricing}</a>
+      <a class:list={{ active: activeKey === 'contact' }} href={paths[lang].contact}>{t.nav.contact}</a>
     </nav>
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú">☰</button>
-    <a class="btn primary small" href="/contacto#formulario">Solicitar demo →</a>
+    <details class="language-switcher">
+      <summary aria-label={t.language}>{lang.toUpperCase()}</summary>
+      <div class="language-menu">
+        {languageOptions.map((option) => (
+          <a class:list={{ active: option.locale === lang }} href={option.href} lang={option.locale} hreflang={option.locale}>
+            <span>{option.locale.toUpperCase()}</span>{option.name}
+          </a>
+        ))}
+      </div>
+    </details>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label={t.menuOpen} data-open-label={t.menuOpen} data-close-label={t.menuClose}>☰</button>
+    <a class="btn primary small" href={contactFormHref}>{t.nav.demo}</a>
   </div>
   <div class="container mobile-menu" id="mobile-menu">
-    <a class:list={{ active: active === 'producto' }} href="/producto">Producto</a>
-    <a class:list={{ active: active === 'precios' }} href="/precios">Precios</a>
-    <a class:list={{ active: active === 'contacto' }} href="/contacto">Contacto</a>
-    <a class="btn primary small" href="/contacto#formulario">Solicitar demo →</a>
+    <a class:list={{ active: activeKey === 'product' }} href={paths[lang].product}>{t.nav.product}</a>
+    <a class:list={{ active: activeKey === 'pricing' }} href={paths[lang].pricing}>{t.nav.pricing}</a>
+    <a class:list={{ active: activeKey === 'contact' }} href={paths[lang].contact}>{t.nav.contact}</a>
+    <div class="mobile-languages" aria-label={t.language}>
+      {languageOptions.map((option) => <a class:list={{ active: option.locale === lang }} href={option.href} lang={option.locale} hreflang={option.locale}>{option.locale.toUpperCase()}</a>)}
+    </div>
+    <a class="btn primary small" href={contactFormHref}>{t.nav.demo}</a>
   </div>
 </header>
 <script>
@@ -30,6 +50,7 @@ const { active } = Astro.props;
   toggle?.addEventListener('click', () => {
     const open = menu?.classList.toggle('open') ?? false;
     toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? (toggle.dataset.closeLabel ?? '') : (toggle.dataset.openLabel ?? ''));
     toggle.textContent = open ? '×' : '☰';
   });
 </script>

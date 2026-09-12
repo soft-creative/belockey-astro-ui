@@ -1,12 +1,4 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import LegalPage from '../components/LegalPage.astro';
-const sections = ["1. Responsable del tratamiento", "2. Qué es el chatbot de BeLockey", "3. Datos personales que podemos tratar", "4. Finalidades del tratamiento", "5. Bases jurídicas", "6. Uso de WhatsApp y Meta", "7. Uso de inteligencia artificial y sistemas automatizados", "8. Proveedores y encargados del tratamiento", "9. Transferencias internacionales de datos", "10. Conservación de los datos", "11. Comunicaciones comerciales", "12. Datos de terceros", "13. Menores de edad", "14. Seguridad", "15. Derechos de los usuarios", "16. Reclamaciones ante la autoridad de control", "17. Eliminación de datos", "18. Cambios en esta política"];
+import LocalizedLegalPage from '../components/pages/LocalizedLegalPage.astro';
 ---
-<BaseLayout title="Privacidad del chatbot · BeLockey">
-  <Header />
-  <LegalPage title="Política de privacidad del chatbot de BeLockey" intro="Página accesible por URL, sin enlace en la navegación principal ni en el footer." sections={sections} />
-  <Footer />
-</BaseLayout>
+<LocalizedLegalPage lang="es" page="chatbotPrivacy" />

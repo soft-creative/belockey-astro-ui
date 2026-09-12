@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import { translations, type Locale, type PageKey } from '../../i18n';
+
+interface Props { lang: Locale; page: Extract<PageKey, 'privacy' | 'terms' | 'cookies' | 'chatbotPrivacy'>; }
+const { lang, page } = Astro.props;
+const legal = translations[lang].legal;
+const content = legal[page];
+---
+<BaseLayout title={`${content.title} · BeLockey`} description={content.intro} lang={lang} page={page}>
+  <Header lang={lang} page={page} />
+  <main>
+    <section class="legal-hero"><div class="container"><div class="eyebrow">{legal.label}</div><h1 class="legal-title">{content.title}</h1><p class="lead legal-intro">{content.intro}</p></div></section>
+    <div class="legal-wrap"><div class="legal-note">{legal.note}</div>{content.sections.map((section) => <section><h2>{section}</h2><div class="legal-placeholder" aria-hidden="true"><i></i><i></i><i></i></div></section>)}</div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>

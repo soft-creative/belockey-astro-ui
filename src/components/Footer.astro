@@ -1,39 +1,40 @@
+---
+import { paths, translations, type Locale } from '../i18n';
+interface Props { lang?: Locale; }
+const { lang = 'es' } = Astro.props;
+const t = translations[lang].common;
+const productAnchors = ['#vision', '#marca', '#operaciones', '#integraciones', '#faq'];
+const pricingAnchors = ['#composicion', '#factores', '#contratacion', '#faq'];
+---
 <footer>
   <div class="container">
     <div class="footer-grid">
       <div class="foot-brand">
-        <a class="brand-logo" href="/producto" aria-label="BeLockey - Producto"><img src="/assets/belockey-logo.png" alt="BeLockey" /></a>
-        <p>Software para gestionar negocios basados en lockers inteligentes.</p>
+        <a class="brand-logo" href={paths[lang].product} aria-label={`BeLockey - ${t.nav.product}`}><img src="/assets/belockey-logo.png" alt="BeLockey" /></a>
+        <p>{t.footer.description}</p>
       </div>
       <div>
-        <div class="footer-title">Producto</div>
+        <div class="footer-title">{t.nav.product}</div>
         <div class="footer-links">
-          <a href="/producto#vision">Visión general</a>
-          <a href="/producto#marca">Marca y experiencia</a>
-          <a href="/producto#operaciones">Operaciones</a>
-          <a href="/producto#integraciones">Pagos e integraciones</a>
-          <a href="/producto#faq">Preguntas frecuentes</a>
+          {t.footer.productLinks.map((label, index) => <a href={`${paths[lang].product}${productAnchors[index]}`}>{label}</a>)}
         </div>
       </div>
       <div>
-        <div class="footer-title">Precios</div>
+        <div class="footer-title">{t.nav.pricing}</div>
         <div class="footer-links">
-          <a href="/precios#composicion">Cómo se compone</a>
-          <a href="/precios#factores">Factores de precio</a>
-          <a href="/precios#contratacion">Contratación</a>
-          <a href="/precios#faq">Preguntas frecuentes</a>
+          {t.footer.pricingLinks.map((label, index) => <a href={`${paths[lang].pricing}${pricingAnchors[index]}`}>{label}</a>)}
         </div>
       </div>
       <div>
-        <div class="footer-title">Sobre nosotros</div>
+        <div class="footer-title">{t.footer.about}</div>
         <div class="footer-links">
-          <a href="/contacto">Contacto</a>
-          <a href="/privacidad">Política de privacidad</a>
-          <a href="/terminos">Términos y condiciones</a>
-          <a href="/cookies">Cookies</a>
+          <a href={paths[lang].contact}>{t.nav.contact}</a>
+          <a href={paths[lang].privacy}>{t.footer.privacy}</a>
+          <a href={paths[lang].terms}>{t.footer.terms}</a>
+          <a href={paths[lang].cookies}>{t.footer.cookies}</a>
         </div>
       </div>
     </div>
-    <div class="foot-bottom"><span>© 2026 BeLockey</span><span>Diseño web · Sistema visual BeLockey</span></div>
+    <div class="foot-bottom"><span>© 2026 BeLockey</span><span>{t.footer.signature}</span></div>
   </div>
 </footer>

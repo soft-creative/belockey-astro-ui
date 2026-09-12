@@ -1,18 +1,24 @@
 ---
 import '../styles/global.css';
+import { alternateLinks, type Locale, type PageKey } from '../i18n';
 interface Props {
   title: string;
   description?: string;
+  lang?: Locale;
+  page?: PageKey;
 }
-const { title, description = '' } = Astro.props;
+const { title, description = '', lang = 'es', page } = Astro.props;
+const alternates = page ? alternateLinks(page) : [];
 ---
 <!doctype html>
-<html lang="es">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    {alternates.map(({ locale, href }) => <link rel="alternate" hreflang={locale} href={href} />)}
+    {page && <link rel="alternate" hreflang="x-default" href={alternates.find(({ locale }) => locale === 'es')?.href} />}
   </head>
   <body>
     <slot />

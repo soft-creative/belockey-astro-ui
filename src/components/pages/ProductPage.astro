@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import LockerVisual from '../LockerVisual.astro';
+import { paths, translations, type Locale } from '../../i18n';
+
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const t = translations[lang].product;
+const brandIcons = ['◐', '◫', '▣', '✉'];
+const operationIcons = ['▥', '▦', '◎'];
+const integrationIcons = ['S', 'P', 'M'];
+const stripIcons = ['▦', '▣', '⌁', '◫', '◎'];
+---
+<BaseLayout title={t.metaTitle} description={t.metaDescription} lang={lang} page="product">
+  <Header active="producto" lang={lang} page="product" />
+  <main>
+    <section class="hero" id="vision">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">{t.hero.eyebrow}</div>
+          <h1>{t.hero.before} <span class="blue">{t.hero.highlight}</span> {t.hero.after}</h1>
+          <p>{t.hero.description}</p>
+          <div class="actions">
+            <a class="btn primary" href={`${paths[lang].contact}#formulario`}>{t.hero.primary}</a>
+            <a class="btn secondary" href="#operaciones">{t.hero.secondary}</a>
+          </div>
+          <div class="hero-note">{t.hero.notes.map((note) => <span><i class="tick"></i>{note}</span>)}</div>
+        </div>
+        <LockerVisual />
+      </div>
+    </section>
+    <div class="strip"><div class="container strip-grid">{t.strip.map((item, index) => <div class="mini"><span class="icon">{stripIcons[index]}</span>{item}</div>)}</div></div>
+
+    <section class="section" id="marca">
+      <div class="container">
+        <div class="section-head"><div><div class="eyebrow">{t.brand.eyebrow}</div><h2>{t.brand.title}</h2></div><p>{t.brand.copy}</p></div>
+        <div class="grid2">
+          <div class="grid2">{t.brand.cards.map(([title, copy], index) => <div class="card"><div class="icon">{brandIcons[index]}</div><h3>{title}</h3><p>{copy}</p></div>)}</div>
+          <div class="brand-panel">
+            <div class="eyebrow">{t.brand.panelEyebrow}</div><h3>{t.brand.panelTitle}</h3>
+            {t.brand.panelRows.map((label, index) => <div class="row"><b>{label}</b>{index === 0 ? <div class="swatches"><i></i><i></i><i></i></div> : <div class="toggle"></div>}</div>)}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft" id="operaciones">
+      <div class="container">
+        <div class="section-head"><div><div class="eyebrow">{t.operations.eyebrow}</div><h2>{t.operations.before} <span class="blue">{t.operations.highlight}</span></h2></div><p>{t.operations.copy}</p></div>
+        <div class="grid3">{t.operations.cards.map(([title, bullets], index) => <div class="card"><div class="icon">{operationIcons[index]}</div><h3>{title}</h3><div class="bullets">{bullets.map((bullet) => <div><span class="check">✓</span>{bullet}</div>)}</div></div>)}</div>
+      </div>
+    </section>
+
+    <section class="section" id="integraciones">
+      <div class="container">
+        <div class="section-head"><div><div class="eyebrow">{t.integrations.eyebrow}</div><h2>{t.integrations.title}</h2></div><p>{t.integrations.copy}</p></div>
+        <div class="grid3">{t.integrations.cards.map(([title, copy], index) => <div class="card"><div class="icon">{integrationIcons[index]}</div><h3>{title}</h3><p>{copy}</p></div>)}</div>
+      </div>
+    </section>
+
+    <section class="section soft" id="faq"><div class="container"><div class="section-head"><div><div class="eyebrow">FAQ</div><h2>{t.faq.title}</h2></div></div><div class="faq">{t.faq.items.map((item) => <div class="item"><span>{item}</span><span>+</span></div>)}</div></div></section>
+    <section class="section compact"><div class="container"><div class="callout"><div><div class="eyebrow">{t.cta.eyebrow}</div><h2>{t.cta.title}</h2><p>{t.cta.copy}</p></div><a class="btn primary" href={`${paths[lang].contact}#formulario`}>{t.cta.button}</a></div></div></section>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>

@@ -1,12 +1,4 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import ContactPage from '../components/pages/ContactPage.astro';
 ---
-<BaseLayout title="Contacto · BeLockey" description="Contacto comercial y solicitud de demo de BeLockey.">
-  <Header active="contacto" />
-<section class="legal-hero"><div class="container"><div class="eyebrow">Contacto</div><h1 style="font-size:54px;max-width:760px">Hablemos de tu proyecto <span class="blue">con lockers inteligentes.</span></h1><p class="lead" style="margin-top:22px">Cuéntanos qué necesitas y el equipo de BeLockey podrá orientarte sobre producto, precios o una demo.</p></div></section>
-<section class="section" id="formulario"><div class="container"><div class="form-grid"><div class="card"><h2 style="font-size:30px;margin-bottom:8px">Cuéntanos qué necesitas.</h2><p>Usa este formulario para solicitar información, presupuesto o una demo.</p><div class="grid2" style="margin-top:28px"><div><div class="field-label">Nombre</div><div class="input">Tu nombre</div></div><div><div class="field-label">Email</div><div class="input">tu@email.com</div></div><div><div class="field-label">Empresa (opcional)</div><div class="input">Nombre de empresa</div></div><div><div class="field-label">Tema</div><div class="select">Selecciona una opción ▾</div></div></div><div style="margin-top:18px"><div class="field-label">Mensaje</div><div class="textarea">Cuéntanos brevemente tu proyecto, el uso previsto y cualquier requisito relevante.</div></div><div class="actions" style="justify-content:flex-end"><a class="btn primary" href="#">Enviar mensaje →</a></div></div><aside class="contact-side"><div class="eyebrow">Antes de enviar</div><h3>Información útil para orientarte mejor</h3><div class="bullets"><div><span class="check">✓</span>Uso principal del locker</div><div><span class="check">✓</span>Número aproximado de ubicaciones</div><div><span class="check">✓</span>Si necesitas reserva online o kiosco</div><div><span class="check">✓</span>Métodos de acceso o pago que necesitas</div></div><hr style="border:0;border-top:1px solid var(--border);margin:28px 0"/><p>No mostramos en este mock teléfonos, direcciones ni tiempos de respuesta que no estén confirmados.</p></aside></div></div></section>
-<section class="section soft"><div class="container"><div class="grid3"><div class="card"><div class="icon">▦</div><h3>Producto</h3><p>Consulta cómo encaja BeLockey en tu operativa y qué módulos necesitas.</p></div><div class="card"><div class="icon">◫</div><h3>Precios</h3><p>Solicita una propuesta ajustada al hardware, software y servicios requeridos.</p></div><div class="card"><div class="icon">▶</div><h3>Demo</h3><p>Revisa el flujo de producto con el equipo y resuelve tus dudas de implementación.</p></div></div></div></section>
-  <Footer />
-</BaseLayout>
+<ContactPage lang="es" />

@@ -1,12 +1,4 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import LegalPage from '../components/LegalPage.astro';
-const sections = ["1. Partes", "2. El servicio", "3. Tu cuenta", "4. Uso aceptable", "5. Tarifas y pago", "6. SLA y créditos", "7. Tus datos", "8. Propiedad intelectual", "9. Confidencialidad", "10. Garantías y exoneraciones", "11. Limitación de responsabilidad", "12. Indemnizaciones", "13. Vigencia y rescisión", "14. Ley aplicable", "15. Cambios", "16. Contacto"];
+import LocalizedLegalPage from '../components/pages/LocalizedLegalPage.astro';
 ---
-<BaseLayout title="Términos y condiciones · BeLockey">
-  <Header />
-  <LegalPage title="Términos y condiciones" intro="Estructura visual para las condiciones del servicio aprobadas de BeLockey." sections={sections} />
-  <Footer />
-</BaseLayout>
+<LocalizedLegalPage lang="es" page="terms" />
