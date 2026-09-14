@@ -66,6 +66,8 @@ jobs:
               throw error;
             }
 
+          branch: ${{ inputs.branch }}
+
       - name: Checkout selected ref
         uses: actions/checkout@v4
         with:
