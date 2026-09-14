@@ -1,0 +1,161 @@
+name: Release Preview
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, reopened, synchronize, labeled, unlabeled, ready_for_review]
+
+concurrency:
+  group: release-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  preview:
+    if: >
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.head.ref == 'develop' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Detect release label
+        id: label
+        shell: bash
+        env:
+          PR_LABELS_JSON: ${{ toJson(github.event.pull_request.labels.*.name) }}
+        run: python3 .github/scripts/ci_utils.py detect-release-label --labels-json "$PR_LABELS_JSON" >> "$GITHUB_OUTPUT"
+
+      - name: Read current version
+        id: current
+        if: steps.label.outputs.status == 'valid'
+        shell: bash
+        run: python3 .github/scripts/ci_utils.py read-version >> "$GITHUB_OUTPUT"
+
+      - name: Calculate next version
+        id: next
+        if: steps.label.outputs.status == 'valid'
+        shell: bash
+        run: |
+          python3 .github/scripts/ci_utils.py bump-version \
+            --version "${{ steps.current.outputs.version }}" \
+            --release-label "${{ steps.label.outputs.label }}" >> "$GITHUB_OUTPUT"
+
+      - name: Manage preview release
+        uses: actions/github-script@v7
+        env:
+          LABEL_STATUS: ${{ steps.label.outputs.status }}
+          RELEASE_LABEL: ${{ steps.label.outputs.label }}
+          RELEASE_LABELS_JSON: ${{ steps.label.outputs.release_labels }}
+          CURRENT_VERSION: ${{ steps.current.outputs.version }}
+          NEXT_VERSION: ${{ steps.next.outputs.version }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const marker = '<!-- release-preview -->';
+            const prNumber = context.payload.pull_request.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            async function upsertComment(lines) {
+              const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number: prNumber, per_page: 100 });
+              const body = lines.join('\n');
+              const existing = comments.find((comment) => comment.body?.includes(marker));
+              if (existing) {
+                await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+              } else {
+                await github.rest.issues.createComment({ owner, repo, issue_number: prNumber, body });
+              }
+            }
+
+            async function releases() {
+              return github.paginate(github.rest.repos.listReleases, { owner, repo, per_page: 100 });
+            }
+
+            async function clearManagedPreviews(allReleases) {
+              for (const release of allReleases.filter((item) => item.prerelease && item.body?.includes(`Managed-By-PR: #${prNumber}`))) {
+                await github.rest.repos.deleteRelease({ owner, repo, release_id: release.id });
+                try {
+                  await github.rest.git.deleteRef({ owner, repo, ref: `tags/${release.tag_name}` });
+                } catch (error) {
+                  if (error.status !== 404) throw error;
+                }
+              }
+            }
+
+            const allReleases = await releases();
+            await clearManagedPreviews(allReleases);
+            if (process.env.LABEL_STATUS === 'missing') {
+              await upsertComment([marker, '', 'No se ha generado preview de release porque esta PR no tiene ninguno de los labels requeridos:', '- `release-mayor`', '- `release-minor`', '- `release-patch`', '', 'Añade exactamente uno de estos labels para reservar la siguiente versión.']);
+              return;
+            }
+            if (process.env.LABEL_STATUS === 'invalid') {
+              const labels = JSON.parse(process.env.RELEASE_LABELS_JSON || '[]').map((label) => `\`${label}\``).join(', ');
+              await upsertComment([marker, '', 'Configuración inválida de release.', '', `La PR tiene más de un label de release activo: ${labels}.`, '', 'Debe existir exactamente uno:', '- `release-mayor`', '- `release-minor`', '- `release-patch`']);
+              core.setFailed('More than one release label is present');
+              return;
+            }
+
+            function parseVersion(version) {
+              const parts = version.replace(/^v/, '').split('.').map(Number);
+              if (parts.length !== 3 || parts.some((part) => !Number.isInteger(part) || part < 0)) throw new Error(`Unsupported semantic version: ${version}`);
+              return parts;
+            }
+            function bumpVersion(version) {
+              const [major, minor, patch] = parseVersion(version);
+              if (process.env.RELEASE_LABEL === 'release-mayor') return `${major + 1}.0.0`;
+              if (process.env.RELEASE_LABEL === 'release-minor') return `${major}.${minor + 1}.0`;
+              return `${major}.${minor}.${patch + 1}`;
+            }
+            async function tagIsFree(tag) {
+              try {
+                await github.rest.git.getRef({ owner, repo, ref: `tags/${tag}` });
+                return false;
+              } catch (error) {
+                if (error.status === 404) return true;
+                throw error;
+              }
+            }
+            async function releaseIsFree(tag) {
+              try {
+                await github.rest.repos.getReleaseByTag({ owner, repo, tag });
+                return false;
+              } catch (error) {
+                if (error.status === 404) return true;
+                throw error;
+              }
+            }
+
+            let version = process.env.NEXT_VERSION;
+            let attempts = 0;
+            while (attempts < 50) {
+              const tag = `v${version}`;
+              const reserved = allReleases.some((release) => release.prerelease && release.body?.includes(`Final-Version: ${tag}`));
+              if (!reserved && await tagIsFree(tag) && await releaseIsFree(tag)) break;
+              version = bumpVersion(version);
+              attempts += 1;
+            }
+            if (attempts === 50) throw new Error('Could not find a free release version');
+
+            const finalTag = `v${version}`;
+            const previewTag = `preview-${finalTag}-pr${prNumber}`;
+            const created = await github.rest.repos.createRelease({
+              owner, repo, tag_name: previewTag, target_commitish: context.payload.pull_request.head.sha,
+              name: `Preview ${finalTag} for PR #${prNumber}`,
+              body: [`Managed-By-PR: #${prNumber}`, `Final-Version: ${finalTag}`, `Release-Label: ${process.env.RELEASE_LABEL}`].join('\n'),
+              prerelease: true, draft: false,
+            });
+            await upsertComment([marker, '', 'Preview de release reservada correctamente.', '', `- Versión actual: \`${process.env.CURRENT_VERSION}\``, `- Label de release: \`${process.env.RELEASE_LABEL}\``, `- Versión final reservada: \`${finalTag}\``, `- Tag preview: \`${previewTag}\``, `- Release preview: ${created.data.html_url}`]);

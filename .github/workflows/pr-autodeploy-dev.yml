@@ -1,0 +1,58 @@
+name: PR Autodeploy Dev
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, ready_for_review]
+
+concurrency:
+  group: pr-autodeploy-dev-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-dev:
+    name: Build and deploy PR to dev via FTP
+    runs-on: ubuntu-latest
+    if: >
+      !github.event.pull_request.draft &&
+      github.event.pull_request.base.ref == 'develop' &&
+      contains(github.event.pull_request.labels.*.name, 'autodeploy-ftp') &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    env:
+      FTP_SERVER: ${{ secrets.FTP_DEV_SERVER }}
+      FTP_USERNAME: ${{ secrets.FTP_DEV_USERNAME }}
+      FTP_PASSWORD: ${{ secrets.FTP_DEV_PASSWORD }}
+      FTP_TARGET_DIR: ${{ secrets.FTP_DEV_TARGET_DIR }}
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Deploy dist via lftp
+        shell: bash
+        run: |
+          lftp -u "${FTP_USERNAME}","${FTP_PASSWORD}" "${FTP_SERVER}" <<EOF
+          set ftp:list-options -a
+          set ftp:passive-mode true
+          set ssl:verify-certificate no
+          mkdir -p "${FTP_TARGET_DIR}"
+          cd "${FTP_TARGET_DIR}"
+          mirror -R --delete --verbose --parallel=4 dist/ .
+          bye
+          EOF

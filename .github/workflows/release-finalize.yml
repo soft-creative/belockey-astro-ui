@@ -1,0 +1,186 @@
+name: Release Finalize
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [closed]
+
+concurrency:
+  group: release-finalize-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  finalize:
+    if: >
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.head.ref == 'develop' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Locate managed preview release
+        id: preview
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const releases = await github.paginate(github.rest.repos.listReleases, {
+              owner: context.repo.owner, repo: context.repo.repo, per_page: 100,
+            });
+            const preview = releases.find((release) =>
+              release.prerelease && release.body?.includes(`Managed-By-PR: #${context.payload.pull_request.number}`)
+            );
+            if (!preview) {
+              core.setOutput('found', 'false');
+              return;
+            }
+            const version = preview.body.match(/^Final-Version:\s*(v\d+\.\d+\.\d+)$/m)?.[1];
+            if (!version) throw new Error(`Preview ${preview.tag_name} does not contain Final-Version metadata`);
+            core.setOutput('found', 'true');
+            core.setOutput('release_id', String(preview.id));
+            core.setOutput('preview_tag', preview.tag_name);
+            core.setOutput('final_version', version);
+
+      - name: Comment when preview is missing
+        if: steps.preview.outputs.found != 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const marker = '<!-- release-finalize -->';
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.payload.pull_request.number;
+            const body = [marker, '', 'No se ha encontrado una preview de release gestionada para esta PR.', '', 'No se crea ninguna release final. Si la PR ya se finalizó antes, este resultado es esperable al reejecutar el workflow.'].join('\n');
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number, per_page: 100 });
+            const existing = comments.find((comment) => comment.body?.includes(marker));
+            if (existing) await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            else await github.rest.issues.createComment({ owner, repo, issue_number, body });
+
+      - name: Verify final release availability
+        id: verify
+        if: steps.preview.outputs.found == 'true'
+        env:
+          FINAL_VERSION: ${{ steps.preview.outputs.final_version }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            async function exists(call) {
+              try { await call(); return true; } catch (error) { if (error.status === 404) return false; throw error; }
+            }
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const tagExists = await exists(() => github.rest.git.getRef({ owner, repo, ref: `tags/${process.env.FINAL_VERSION}` }));
+            const releaseExists = await exists(() => github.rest.repos.getReleaseByTag({ owner, repo, tag: process.env.FINAL_VERSION }));
+            core.setOutput('available', !tagExists && !releaseExists ? 'true' : 'false');
+
+      - name: Fail on conflicting final release
+        if: steps.preview.outputs.found == 'true' && steps.verify.outputs.available != 'true'
+        run: |
+          echo "The final release or its tag already exists"
+          exit 1
+
+      - name: Sync project version
+        id: sync
+        if: steps.preview.outputs.found == 'true'
+        shell: bash
+        run: python3 .github/scripts/ci_utils.py sync-version --version "${{ steps.preview.outputs.final_version }}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit release version
+        if: steps.preview.outputs.found == 'true' && steps.sync.outputs.changed == 'true'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- package.json package-lock.json
+          git commit -m "chore(release): prepare ${{ steps.preview.outputs.final_version }}"
+          git push origin HEAD:main
+
+      - name: Capture release commit SHA
+        id: gitsha
+        if: steps.preview.outputs.found == 'true'
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Create final release
+        id: release
+        if: steps.preview.outputs.found == 'true'
+        env:
+          FINAL_VERSION: ${{ steps.preview.outputs.final_version }}
+          RELEASE_SHA: ${{ steps.gitsha.outputs.sha }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const release = await github.rest.repos.createRelease({
+              owner: context.repo.owner, repo: context.repo.repo,
+              tag_name: process.env.FINAL_VERSION, target_commitish: process.env.RELEASE_SHA,
+              name: process.env.FINAL_VERSION, prerelease: false, draft: false, generate_release_notes: true,
+            });
+            core.setOutput('html_url', release.data.html_url);
+
+      - name: Delete preview release and tag
+        if: steps.preview.outputs.found == 'true'
+        env:
+          RELEASE_ID: ${{ steps.preview.outputs.release_id }}
+          PREVIEW_TAG: ${{ steps.preview.outputs.preview_tag }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            await github.rest.repos.deleteRelease({ owner, repo, release_id: Number(process.env.RELEASE_ID) });
+            try { await github.rest.git.deleteRef({ owner, repo, ref: `tags/${process.env.PREVIEW_TAG}` }); }
+            catch (error) { if (error.status !== 404) throw error; }
+
+      - name: Create or reuse version sync PR
+        id: sync_pr
+        if: steps.preview.outputs.found == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const comparison = await github.rest.repos.compareCommitsWithBasehead({ owner, repo, basehead: 'develop...main' });
+            if (comparison.data.ahead_by === 0) return;
+            const prs = await github.paginate(github.rest.pulls.list, { owner, repo, state: 'open', base: 'develop', head: `${owner}:main`, per_page: 100 });
+            const pr = prs[0] ?? (await github.rest.pulls.create({ owner, repo, title: 'sync version', head: 'main', base: 'develop', body: 'Sync the finalized release version back into develop.' })).data;
+            core.setOutput('html_url', pr.html_url);
+
+      - name: Publish finalize feedback
+        if: steps.preview.outputs.found == 'true'
+        env:
+          FINAL_VERSION: ${{ steps.preview.outputs.final_version }}
+          RELEASE_URL: ${{ steps.release.outputs.html_url }}
+          SYNC_PR_URL: ${{ steps.sync_pr.outputs.html_url }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const marker = '<!-- release-finalize -->';
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.payload.pull_request.number;
+            const body = [marker, '', 'Release finalizada correctamente.', '', `- Versión final: \`${process.env.FINAL_VERSION}\``, `- Release publicada: ${process.env.RELEASE_URL}`, `- PR de sincronización main -> develop: ${process.env.SYNC_PR_URL || 'no ha sido necesaria'}`].join('\n');
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number, per_page: 100 });
+            const existing = comments.find((comment) => comment.body?.includes(marker));
+            if (existing) await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            else await github.rest.issues.createComment({ owner, repo, issue_number, body });
