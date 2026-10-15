@@ -1,0 +1,4 @@
+# Solo desarrollo local. Sustituye los valores antes de enviar.
+RESEND_API_KEY=re_REEMPLAZAR
+# Debe pertenecer a un dominio verificado en Resend.
+CONTACT_FROM_EMAIL="BeLockey <REEMPLAZAR@dominio-verificado.example>"

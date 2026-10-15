@@ -1,0 +1,12 @@
+{
+  "name": "belockey-corporate",
+  "compatibility_date": "2026-06-23",
+  "main": "worker/index.ts",
+  "vars": { "CONTACT_TO_EMAIL": "contacta@belockey.com" },
+  "ratelimits": [{ "name": "CONTACT_RATE_LIMITER", "namespace_id": "1003", "simple": { "limit": 5, "period": 60 } }],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  }
+}

@@ -77,6 +77,18 @@ footer{background:#f4f7fb;border-top:1px solid var(--border);padding:68px 0 28px
 .contact-fields{margin-top:28px}
 .contact-message{margin-top:18px}
 .contact-submit{justify-content:flex-end}
+.contact-form{min-width:0;position:relative}
+.contact-form .field-label{display:block}
+.contact-form .input,.contact-form .select,.contact-form .textarea{font:inherit;color:var(--navy);min-width:0}
+.contact-form .input::placeholder,.contact-form .textarea::placeholder{color:var(--text);opacity:1}
+.contact-form .textarea{resize:vertical;min-height:150px}
+.contact-form :is(input,select,textarea):focus-visible{outline:3px solid var(--soft2);border-color:var(--blue);outline-offset:2px}
+.contact-form button{font-family:inherit;cursor:pointer}
+.contact-form button:disabled{opacity:.65;cursor:wait;transform:none}
+.contact-honeypot{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.contact-form .contact-status:not(:empty){margin-top:20px;padding:14px 16px;background:var(--soft);border:1px solid var(--border);border-radius:10px;color:var(--navy);overflow-wrap:anywhere}
+.contact-status[data-state="error"]{border-left:3px solid var(--navy)}
+@media(max-width:767px){.contact-fields{grid-template-columns:1fr}.contact-submit .btn{width:100%}}
 .contact-side hr{border:0;border-top:1px solid var(--border);margin:28px 0}
 a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid rgba(0,98,254,.35);outline-offset:3px}
 @media(max-width:900px){
