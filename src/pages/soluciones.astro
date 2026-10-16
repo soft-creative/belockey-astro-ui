@@ -1,14 +1,173 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';import Hero from '../components/Hero.astro';import SectionHeading from '../components/SectionHeading.astro';import IconCard from '../components/IconCard.astro';import FAQ from '../components/FAQ.astro';import CTA from '../components/CTA.astro';
-const cases=[['Click & Collect','La forma más eficiente de entregar pedidos online. Tus clientes recogen sus compras cuando quieran, sin colas ni esperas.','/assets/solution-card-1.jpg'],['Custodia de equipaje','Ofrece a tus usuarios un espacio seguro para su equipaje, con reservas digitales y acceso autónomo.','/assets/solution-card-2.jpg'],['Consignas inteligentes','Solución versátil para todo tipo de objetos. Ideal para espacios públicos, comerciales o de alta afluencia.','/assets/solution-card-3.jpg'],['Custodia de llaves','Gestiona llaves de forma segura y eficiente. Perfecto para alquileres, flotas, empresas de servicios y más.','/assets/solution-card-4.jpg']];
-const sectors=[['Retail y e-commerce','Entrega de pedidos online, devoluciones y recogidas sin contacto.','/assets/sector-1.jpg'],['Hoteles y turismo','Custodia de equipaje, check-in autónomo y mejor experiencia del huésped.','/assets/sector-2.jpg'],['Empresas','Gestión de pertenencias, equipos de trabajo y llaves para empleados y visitas.','/assets/sector-3.jpg'],['Transporte','Consignas en estaciones, aeropuertos y terminales para una movilidad más cómoda.','/assets/sector-4.jpg'],['Gimnasios y centros','Taquillas seguras para socios, visitas y personal.','/assets/sector-5.jpg']];
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { paths } from '../i18n';
+
+const cases = [
+  ['Click & Collect', 'La forma más eficiente de entregar pedidos online. Tus clientes recogen sus compras cuando quieran, sin colas ni esperas.', '/assets/solution-card-1-v2.png'],
+  ['Custodia de equipaje', 'Ofrece a tus usuarios un espacio seguro para su equipaje, con reservas digitales y acceso autónomo.', '/assets/solution-card-2-v2.png'],
+  ['Consignas inteligentes', 'Solución versátil para todo tipo de objetos. Ideal para espacios públicos, comerciales o de alta afluencia.', '/assets/solution-card-3-v2.png'],
+  ['Custodia de llaves', 'Gestiona llaves de forma segura y eficiente. Perfecto para alquileres, flotas, empresas de servicios y más.', '/assets/solution-card-4-v2.png'],
+];
+
+const sectors = [
+  ['Retail y e-commerce', 'Entrega de pedidos online, devoluciones y recogidas sin contacto.', '/assets/sector-1-v2.png'],
+  ['Hoteles y turismo', 'Custodia de equipaje, check-in autónomo y mejor experiencia del huésped.', '/assets/sector-2-v2.png'],
+  ['Empresas', 'Gestión de pertenencias, equipos de trabajo y llaves para empleados y visitas.', '/assets/sector-3-v2.png'],
+  ['Transporte', 'Consignas en estaciones, aeropuertos y terminales para una movilidad más cómoda.', '/assets/sector-4-v2.png'],
+  ['Gimnasios y centros', 'Taquillas seguras para socios, visitas y personal.', '/assets/sector-5-v2.png'],
+];
+
+const tabs = ['Click & Collect', 'Custodia de equipaje', 'Consignas inteligentes', 'Custodia de llaves', 'Retail y e-commerce', 'Hoteles y turismo', 'Empresas', 'Transporte'];
+const tabIcons = ['⌁', '▣', '◇', '⚿', '▢', '✈', '▤', '▥'];
+const implementation = [
+  ['Reservas online', 'Tus usuarios reservan y pagan desde el móvil.', '▣'],
+  ['Autoservicio en el local', 'Acceso rápido y sencillo con códigos, QR o tarjeta.', '⌂'],
+  ['Control remoto', 'Gestiona todo desde una única plataforma, estés donde estés.', '▤'],
+  ['Multiubicación', 'Escala tu solución a una o múltiples ubicaciones fácilmente.', '⌘'],
+];
+const includes = [
+  ['Software de gestión', 'Panel web, app y herramientas de control.', '▤'],
+  ['Hardware inteligente', 'Taquillas modulares, interior y exterior.', '▥'],
+  ['Pagos y facturación', 'Múltiples métodos de pago e integración.', '▱'],
+  ['Permisos y usuarios', 'Control de accesos, roles y auditoría.', '♙'],
+  ['Soporte y acompañamiento', 'Te ayudamos en todo el proceso.', '◔'],
+];
+const faqs = [
+  '¿Cuánto tiempo se tarda en implementar una solución?',
+  '¿Puedo personalizar el tamaño y número de taquillas?',
+  '¿Qué métodos de pago están disponibles?',
+  '¿Ofrecéis soporte técnico tras la instalación?',
+];
 ---
-<BaseLayout title="Soluciones | BeLockey" description="Soluciones de lockers inteligentes para retail, turismo, empresas y más.">
-<Hero eyebrow="Una solución para cada negocio" title="Soluciones para cada" highlight="caso de uso." description="En BeLockey adaptamos el hardware y el software a las necesidades de cada sector y modelo de negocio, para que puedas ofrecer una experiencia de autoservicio segura, flexible y eficiente." image="/assets/hero-solutions.webp" primary="Solicitar demo" badges={['Soluciones a medida de tu negocio','Hardware y software totalmente integrados','Escalable en una o múltiples ubicaciones']} />
-<section class="band" id="casos"><div class="shell"><div class="pill-row"><span class="pill active">🛒 Click & Collect</span><span class="pill">▣ Custodia de equipaje</span><span class="pill">⬡ Consignas inteligentes</span><span class="pill">⚿ Custodia de llaves</span><span class="pill">▢ Retail y e-commerce</span><span class="pill">✈ Hoteles y turismo</span><span class="pill">▣ Empresas</span><span class="pill">▤ Transporte</span></div><SectionHeading eyebrow="Soluciones destacadas" title="Casos de uso que transforman tu operación." /><div class="grid grid-4">{cases.map(([t,c,img])=><article class="card photo-card"><img src={img} alt=""/><div class="content"><h3>{t}</h3><p>{c}</p><span class="text-link">Saber más →</span></div></article>)}</div></div></section>
-<section class="band" id="sectores"><div class="shell"><SectionHeading eyebrow="Soluciones por sector" title="Tu sector, nuestra tecnología." copy="Cada sector tiene sus propios retos. En BeLockey te ofrecemos soluciones adaptadas para que saques el máximo partido a tus taquillas inteligentes." /><div class="grid grid-5">{sectors.map(([t,c,img])=><article class="card photo-card"><img src={img} alt=""/><div class="content"><h3>{t}</h3><p>{c}</p><span class="text-link">Ver solución →</span></div></article>)}</div></div></section>
-<section class="band band-tint" id="implementacion"><div class="shell"><SectionHeading eyebrow="Diferentes formas de implementación" title="Una solución, múltiples formas de funcionar."/><div class="grid grid-4"><IconCard icon="▣" title="Reservas online" copy="Tus usuarios reservan y pagan desde el móvil."/><IconCard icon="⌂" title="Autoservicio en el local" copy="Acceso rápido y sencillo con códigos, QR o tarjeta."/><IconCard icon="▤" title="Control remoto" copy="Gestiona todo desde una única plataforma, estés donde estés."/><IconCard icon="⌘" title="Multiubicación" copy="Escala tu solución a una o múltiples ubicaciones fácilmente."/></div></div></section>
-<section class="band"><div class="shell"><SectionHeading eyebrow="Todo lo que necesitas" title="Qué incluye cada solución."/><div class="grid grid-5"><IconCard icon="▤" title="Software de gestión" copy="Panel web, app y herramientas de control."/><IconCard icon="▥" title="Hardware inteligente" copy="Taquillas modulares, interior y exterior."/><IconCard icon="▱" title="Pagos y facturación" copy="Múltiples métodos de pago e integración."/><IconCard icon="♙" title="Permisos y usuarios" copy="Control de accesos, roles y auditoría."/><IconCard icon="◔" title="Soporte y acompañamiento" copy="Te ayudamos en todo el proceso."/></div></div></section>
-<section class="band band-tint"><div class="shell"><SectionHeading eyebrow="Guía de decisión" title="Encuentra tu solución ideal."/><div class="table-wrap"><table><thead><tr><th>Solución</th><th>¿Qué resuelve?</th><th>Ubicación habitual</th><th>Modelo operativo</th><th>Ideal para...</th></tr></thead><tbody><tr><td><b>Click & Collect</b></td><td>Entrega y recogida de pedidos</td><td>Tiendas, centros comerciales</td><td>Autónomo / 24/7</td><td>Retail y e-commerce</td></tr><tr><td><b>Custodia de equipaje</b></td><td>Guarda de maletas y pertenencias</td><td>Hoteles, estaciones, aeropuertos</td><td>Con reserva / Autónomo</td><td>Turismo y transporte</td></tr><tr><td><b>Consignas inteligentes</b></td><td>Custodia de objetos</td><td>Espacios públicos, centros</td><td>Autónomo / 24/7</td><td>Uso general</td></tr><tr><td><b>Custodia de llaves</b></td><td>Gestión segura de llaves</td><td>Empresas, alquileres, servicios</td><td>Con permisos</td><td>Empresas y servicios</td></tr></tbody></table></div></div></section>
-<FAQ title="Dudas comunes sobre nuestras soluciones." items={['¿Cuánto tiempo se tarda en implementar una solución?','¿Puedo personalizar el tamaño y número de taquillas?','¿Qué métodos de pago están disponibles?','¿Ofrecéis soporte técnico tras la instalación?']}/><CTA title="¿Hablamos de tu proyecto?" copy="Cuéntanos tu caso y te ayudaremos a encontrar la mejor solución." />
+<BaseLayout title="Soluciones | BeLockey" description="Soluciones de lockers inteligentes para retail, turismo, empresas y más." lang="es">
+  <Header active="soluciones" lang="es" page="solutions" />
+  <main class="solutions-page">
+    <section class="solutions-hero">
+      <div class="container solutions-hero-grid">
+        <div class="solutions-hero-copy">
+          <div class="eyebrow">Una solución para cada negocio</div>
+          <h1>Soluciones para cada <span class="blue">caso de uso.</span></h1>
+          <p>En BeLockey adaptamos el hardware y el software a las necesidades de cada sector y modelo de negocio, para que puedas ofrecer una experiencia de autoservicio segura, flexible y eficiente.</p>
+          <div class="actions">
+            <a class="btn primary" href={`${paths.es.contact}#formulario`}>Solicitar demo</a>
+            <a class="btn secondary" href="#casos">Hablar con un experto</a>
+          </div>
+          <div class="solutions-hero-notes">
+            <div><span class="solution-note-icon" aria-hidden="true">▣</span><span>Soluciones a medida de tu negocio</span></div>
+            <div><span class="solution-note-icon" aria-hidden="true">◇</span><span>Hardware y software totalmente integrados</span></div>
+            <div><span class="solution-note-icon" aria-hidden="true">⌘</span><span>Escalable en una o múltiples ubicaciones</span></div>
+          </div>
+        </div>
+        <div class="solutions-hero-media">
+          <img src="/assets/hero-solutions-v2.png" alt="Ecosistema de taquillas inteligentes BeLockey" width="485" height="287" fetchpriority="high" />
+        </div>
+      </div>
+    </section>
+
+    <nav class="solution-tabs" aria-label="Tipos de soluciones">
+      <div class="container solution-tabs-track">
+        {tabs.map((tab, index) => (
+          <a class:list={{ active: index === 0 }} href={index < 4 ? '#casos' : '#sectores'}>
+            <span aria-hidden="true">{tabIcons[index]}</span>{tab}
+          </a>
+        ))}
+      </div>
+    </nav>
+
+    <section class="section solutions-section" id="casos">
+      <div class="container">
+        <div class="section-head"><div><div class="eyebrow">Soluciones destacadas</div><h2>Casos de uso que transforman tu operación.</h2></div></div>
+        <div class="solution-case-grid">
+          {cases.map(([title, copy, image]) => (
+            <article class="solution-photo-card">
+              <img src={image} alt={title} width="320" height="168" loading="lazy" />
+              <div><h3>{title}</h3><p>{copy}</p><a href="#guia">Saber más →</a></div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft solutions-section" id="sectores">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="eyebrow">Soluciones por sector</div><h2>Tu sector, nuestra tecnología.</h2></div>
+          <p>Cada sector tiene sus propios retos. En BeLockey te ofrecemos soluciones adaptadas para que saques el máximo partido a tus taquillas inteligentes.</p>
+        </div>
+        <div class="solution-sector-grid">
+          {sectors.map(([title, copy, image]) => (
+            <article class="solution-photo-card sector">
+              <img src={image} alt={title} width="260" height="128" loading="lazy" />
+              <div><h3>{title}</h3><p>{copy}</p><a href="#guia">Ver solución →</a></div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section solutions-section" id="implementacion">
+      <div class="container">
+        <div class="section-head compact-head"><div><div class="eyebrow">Diferentes formas de implementación</div><h2>Una solución, múltiples formas de funcionar.</h2></div></div>
+        <div class="solution-feature-grid">
+          {implementation.map(([title, copy, icon]) => (
+            <article class="solution-feature"><span class="solution-feature-icon" aria-hidden="true">{icon}</span><div><h3>{title}</h3><p>{copy}</p></div></article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft solutions-section">
+      <div class="container">
+        <div class="section-head compact-head"><div><div class="eyebrow">Todo lo que necesitas</div><h2>Qué incluye cada solución.</h2></div></div>
+        <div class="solution-include-grid">
+          {includes.map(([title, copy, icon]) => (
+            <article class="solution-include-card"><span class="solution-feature-icon" aria-hidden="true">{icon}</span><h3>{title}</h3><p>{copy}</p></article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section solutions-section" id="guia">
+      <div class="container">
+        <div class="section-head compact-head"><div><div class="eyebrow">Guía de decisión</div><h2>Encuentra tu solución ideal.</h2></div></div>
+        <div class="solution-table-wrap">
+          <table>
+            <thead><tr><th scope="col">Solución</th><th scope="col">¿Qué resuelve?</th><th scope="col">Ubicación habitual</th><th scope="col">Modelo operativo</th><th scope="col">Ideal para...</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Click & Collect</th><td>Entrega y recogida de pedidos</td><td>Tiendas, centros comerciales</td><td>Autónomo / 24/7</td><td>Retail y e-commerce</td></tr>
+              <tr><th scope="row">Custodia de equipaje</th><td>Guarda de maletas y pertenencias</td><td>Hoteles, estaciones, aeropuertos</td><td>Con reserva / Autónomo</td><td>Turismo y transporte</td></tr>
+              <tr><th scope="row">Consignas inteligentes</th><td>Custodia de objetos</td><td>Espacios públicos, centros</td><td>Autónomo / 24/7</td><td>Uso general</td></tr>
+              <tr><th scope="row">Custodia de llaves</th><td>Gestión segura de llaves</td><td>Empresas, alquileres, servicios</td><td>Con permisos</td><td>Empresas y servicios</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft solutions-section" id="faq">
+      <div class="container solution-faq-layout">
+        <div><div class="eyebrow">Preguntas frecuentes</div><h2>Dudas comunes sobre nuestras soluciones.</h2></div>
+        <div class="faq">{faqs.map((item) => <div class="item"><span>{item}</span><span aria-hidden="true">+</span></div>)}</div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="container">
+        <div class="solutions-cta">
+          <div>
+            <h2>¿Hablamos de tu proyecto?</h2>
+            <p>Cuéntanos tu caso y te ayudaremos a encontrar la mejor solución.</p>
+            <div class="actions">
+              <a class="btn primary" href={`${paths.es.contact}#formulario`}>Reservar demo</a>
+              <a class="btn secondary" href={paths.es.contact}>Hablar con una persona</a>
+            </div>
+          </div>
+          <img src="/assets/hero-solutions-v2.png" alt="" width="485" height="287" loading="lazy" />
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer lang="es" />
 </BaseLayout>

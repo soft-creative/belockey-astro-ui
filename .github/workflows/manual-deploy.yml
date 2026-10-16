@@ -1,0 +1,98 @@
+name: Manual Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Entorno a desplegar
+        required: true
+        type: choice
+        options:
+          - develop
+          - preproduction
+          - production
+      clean_slate:
+        description: Borrar el contenido remoto antes de subir
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  deploy:
+    name: Build and deploy via FTP
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    env:
+      FTP_DEV_SERVER: ${{ secrets.FTP_DEV_SERVER }}
+      FTP_DEV_USERNAME: ${{ secrets.FTP_DEV_USERNAME }}
+      FTP_DEV_PASSWORD: ${{ secrets.FTP_DEV_PASSWORD }}
+      FTP_DEV_TARGET_DIR: ${{ secrets.FTP_DEV_TARGET_DIR }}
+      FTP_PREPRODUCTION_SERVER: ${{ secrets.FTP_PREPRODUCTION_SERVER }}
+      FTP_PREPRODUCTION_USERNAME: ${{ secrets.FTP_PREPRODUCTION_USERNAME }}
+      FTP_PREPRODUCTION_PASSWORD: ${{ secrets.FTP_PREPRODUCTION_PASSWORD }}
+      FTP_PREPRODUCTION_TARGET_DIR: ${{ secrets.FTP_PREPRODUCTION_TARGET_DIR }}
+      FTP_PRODUCTION_SERVER: ${{ secrets.FTP_PRODUCTION_SERVER }}
+      FTP_PRODUCTION_USERNAME: ${{ secrets.FTP_PRODUCTION_USERNAME }}
+      FTP_PRODUCTION_PASSWORD: ${{ secrets.FTP_PRODUCTION_PASSWORD }}
+      FTP_PRODUCTION_TARGET_DIR: ${{ secrets.FTP_PRODUCTION_TARGET_DIR }}
+
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Resolve FTP target
+        shell: bash
+        run: |
+          case "${{ inputs.environment }}" in
+            develop)
+              echo "FTP_SERVER=${FTP_DEV_SERVER}" >> "$GITHUB_ENV"
+              echo "FTP_USERNAME=${FTP_DEV_USERNAME}" >> "$GITHUB_ENV"
+              echo "FTP_PASSWORD=${FTP_DEV_PASSWORD}" >> "$GITHUB_ENV"
+              echo "FTP_TARGET_DIR=${FTP_DEV_TARGET_DIR}" >> "$GITHUB_ENV"
+              ;;
+            preproduction)
+              echo "FTP_SERVER=${FTP_PREPRODUCTION_SERVER}" >> "$GITHUB_ENV"
+              echo "FTP_USERNAME=${FTP_PREPRODUCTION_USERNAME}" >> "$GITHUB_ENV"
+              echo "FTP_PASSWORD=${FTP_PREPRODUCTION_PASSWORD}" >> "$GITHUB_ENV"
+              echo "FTP_TARGET_DIR=${FTP_PREPRODUCTION_TARGET_DIR}" >> "$GITHUB_ENV"
+              ;;
+            production)
+              echo "FTP_SERVER=${FTP_PRODUCTION_SERVER}" >> "$GITHUB_ENV"
+              echo "FTP_USERNAME=${FTP_PRODUCTION_USERNAME}" >> "$GITHUB_ENV"
+              echo "FTP_PASSWORD=${FTP_PRODUCTION_PASSWORD}" >> "$GITHUB_ENV"
+              echo "FTP_TARGET_DIR=${FTP_PRODUCTION_TARGET_DIR}" >> "$GITHUB_ENV"
+              ;;
+          esac
+
+      - name: Deploy dist via lftp
+        shell: bash
+        run: |
+          DELETE_FLAG="--delete"
+          if [ "${{ inputs.clean_slate }}" != "true" ]; then
+            DELETE_FLAG=""
+          fi
+
+          lftp -u "${FTP_USERNAME}","${FTP_PASSWORD}" "${FTP_SERVER}" <<EOF
+          set ftp:list-options -a
+          set ftp:passive-mode true
+          set ssl:verify-certificate no
+          mkdir -p "${FTP_TARGET_DIR}"
+          cd "${FTP_TARGET_DIR}"
+          mirror -R ${DELETE_FLAG} --verbose --parallel=4 dist/ .
+          bye
+          EOF
